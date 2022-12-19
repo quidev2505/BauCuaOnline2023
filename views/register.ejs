@@ -1,0 +1,35 @@
+<%- include('./partials/header'); -%>
+    <a href="/" class="fs-3">    
+        <i class='bx bx-arrow-back'>Trở về</i>
+    </a>
+    <title>Đăng kí tài khoản</title>
+        <div class="container mt-5">   
+            <h1 class="text-center">ĐĂNG KÍ TÀI KHOẢN</h1>
+            <% if(typeof duplicated_username != 'undefined') {%>
+                <div class="alert alert-danger" role="alert">
+                    <%= duplicated_username %> 
+                </div>
+            <% } %> 
+            <form action="/register" method="post" class="container" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Tên đăng nhập</label>
+                    <input type="username" class="form-control" id="username" aria-describedby="emailHelp" minlength="3" name="username" required >
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Mật khẩu</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" name="password" minlength="6" required >
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Nick Name</label>
+                    <input type="text" class="form-control" id="exampleInputtext" name="nickname" required>
+                </div>
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Ảnh đại diện</label>
+                    <input class="form-control" type="file" id="formFile" name="formFile" required>
+                <div>
+                <br>
+                <button type="submit" class="btn btn-primary d-flex justify-content-center">Xác nhận</button>
+            </form>
+        </div>
+
+<%- include('./partials/footer'); -%>

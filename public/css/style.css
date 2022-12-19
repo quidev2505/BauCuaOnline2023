@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,100&display=swap');
+
+*{
+    padding: 0;
+    margin:0;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+}
+
+
+#img_anhdaidien{
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    outline: none;
+    overflow: hidden;
+    border: 2px solid blue;
+    /* box-shadow: 5px 3px 8px 1px black; */
+    margin: 0 auto;
+}
+
+#img_anhdaidien img{
+    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    image-rendering: pixelated;
+}
+
+#err_page{
+
+}
+
+#err_page body
+{
+  background-color:#141019;
+  background: radial-gradient(at 50% -20%, #908392, #0d060e) fixed;
+}
+
+
+#err_page #handboy
+{
+   animation: swing ease-in-out 1.3s infinite alternate;
+    transform-origin: 98% 98%;
+    transform-box: fill-box;
+    
+}
+
+
+#err_page #girllight
+{
+   animation: swing ease-in-out 1.3s infinite alternate;
+    transform-origin: 0% 97%;
+    transform-box: fill-box;
+}
+
+#err_page #hairgirl
+{
+    animation: swinghair ease-in-out 1.3s infinite alternate;
+   transform-origin: 60% 0%;
+    transform-box: fill-box;
+  
+}
+
+#err_page #zero
+{
+  transform-origin:bottom;
+  transform-box:fill-box;
+  
+}
+
+/*************swing************/
+@keyframes swing {
+    0% { transform: rotate(10deg); }
+    100% { transform: rotate(-10deg); }
+}
+
+
+/*************swing hair************/
+@keyframes swinghair {
+    0% { transform: rotate(6deg); }
+    100% { transform: rotate(-6deg); }
+}
+
+
+#totienvnd{
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+table thead th{
+    border: 1px solid #ccc;
+}
+
+table tbody td{
+    border: 1px solid #ccc;
+}
+
+.modal{
+    pointer-events: none;
+}
+
+.modal-body{
+    height: 567px;
+    overflow-y: scroll;
+}
+

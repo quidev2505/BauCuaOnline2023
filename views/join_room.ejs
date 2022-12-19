@@ -1,0 +1,153 @@
+<%- include('./partials/header'); -%>
+<title>Phòng Chơi</title>
+
+<div class="container text-center d-flex flex-column justify-content-between">
+  <% if(typeof  userInfo !== undefined){%>
+    <header class="row">
+      <h2>Phòng chơi game</h2>
+      <a href="/mainScreen" class="fs-3">    
+        <i class='bx bx-arrow-back text-left'>Trở về</i>
+      </a>
+    </header>
+
+    <main class="row" style="height: 50vh;">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" id="btn_show_user" data-bs-toggle="modal" data-bs-target="#exampleModal" style="height: 50px; margin-top: 10px;">
+        Người chơi trong phòng
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Đang trực tuyến</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="userinroom">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+  
+    <footer class="row">
+        <div class="card">
+            <div class="card-header">
+              <p id="nickname_user">   
+                <%= userInfo.nickname%>
+              </p>
+            </div>
+    
+            <div class="card-body d-flex">
+              <div class="col-sm-2 me-2">
+                <img style="width: 100px;
+                height: 100px;
+                border-radius: 10px;
+                border: 3px solid blue" src="/uploads/<%= userInfo.anhdaidien%>" alt="" width="50px" height="50px">
+              </div>
+      
+              
+              <div class="col">
+                <div class="row">
+                  <p style="
+                  width: 100%;
+                  height: 50%;
+                  border: 1px solid #ccc;
+                  border-radius: 10px;
+                  margin-left: 10px;
+                  background-color: #313851;
+                  padding: 5px 0 5px 10px;
+              ">
+                      <span id="tongxu" style="
+                      color: #dbd956;
+                      font-weight: bold;
+                      line-height: 62px;
+                      font-size: 23px;
+                  "><%= userInfo.tongxu %></span> 
+                  <img style="
+                width: 50px;
+                height: 50px;
+            " src="img/—Pngtree—coin_486815.png" alt="">
+                </div>
+                <div class="row d-flex">
+                  <div class="col">
+                    <button type="button" style="width:100%;color:yellow" class="btn btn-danger"><h1>1</h1></button>
+                  </div>
+                  <div class="col">
+                    <button type="button" style="width:100%;color:yellow" class="btn btn-danger"><h1>3</h1></button>
+                  </div>
+                  <div class="col">
+                    <button type="button" style="width:100%;color:yellow" class="btn btn-danger"><h1>5</h1></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+    </footer>
+    <% } %> 
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.js" integrity="sha512-NMtENEqUQ8zHZWjwLg6/1FmcTWwRS2T5f487CCbQB3pQwouZfbrQfylryimT3XvQnpE7ctEKoZgQOAkWkCW/vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js" integrity="sha512-uE2UhqPZkcKyOjeXjPCmYsW9Sudy5Vbv0XwAVnKBamQeasAVAmH6HR9j5Qpy6Itk1cxk+ypFRPeAZwNnEwNuzQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    var socket = io();
+    let userinroom = document.querySelector('#userinroom')
+    let btnshowuser = document.querySelector('#btn_show_user')
+
+    btnshowuser.addEventListener('click',()=>{
+      socket.emit('showuserinRoom');
+    })
+
+    socket.on('showuserinRoomClient',async (data)=>{
+      userinroom.innerHTML = '';
+  
+      let ol =  await document.createElement('ol');
+      data.forEach(function(item, index){
+            let li = document.createElement('li')
+
+            li.innerHTML = '<p style="font-size:20px;font-weight:bold">'+data[index].nickname + '<br>Số xu: ' +data[index].tongxu + '</p>'
+          
+            ol.appendChild(li)
+
+            userinroom.appendChild(ol)
+          }
+        )
+        
+    })
+
+    socket.on("connect", () => {
+      //Khi có người chơi mới kết nối vào phòng sẽ gửi qua cho server biết
+      const nickname = document.querySelector('#nickname_user')
+      const tongxu = document.querySelector('#tongxu')
+      const socketID = socket.id;
+
+      let roomUser = {
+        nickname: nickname.innerText,
+        tongxu: tongxu.innerText,
+        socketID : socketID
+      }
+
+     
+      socket.emit('NewUserJoinRoom', roomUser)
+
+    });
+
+    socket.on('user disconnected',(data)=>{
+      $.notify(`Người chơi "${data}" đã rời phòng !`, "warn",{clickToHide: true}).addStyle('font-weight', 'bold')('opacity','0.6');
+    })
+
+    socket.on('notification_joinRoom',(data)=>{
+      $.notify(`Người chơi "${data}" vừa tham gia phòng !`, "success").addStyle('font-weight', 'bold');
+    })
+
+ 
+    
+</script>
+</body>
+</html>

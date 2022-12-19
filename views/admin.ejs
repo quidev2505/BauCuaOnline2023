@@ -1,0 +1,139 @@
+<%- include('./partials/header'); -%>
+<title>Admin</title>
+<div class="container text-center">
+    <h2>Trang Admin</h2>
+
+    <h3>Danh sách người chơi có yêu cầu nạp tiền</h3>
+
+    <table width="100%">
+        <thead>
+            <th>Tên người chơi</th>
+            <th>Số tiền nạp</th>
+            <th>Hành động</th>
+        </thead>
+        <tbody id="table_req">
+            <tr id="default_tr">
+                <td colspan="3">Hiện tại không có giao dịch</td>
+            </tr>
+        </tbody>
+    </table>
+
+    
+    
+    <div class="row mt-5">
+        <div class="col">
+            <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="btnOpenModal">
+            Xem lịch sử giao dịch
+        </button>
+        
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Lịch sử giao dịch</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table width="100%">
+                        <thead>
+                            <th>Tên người chơi</th>
+                            <th>Số tiền nạp</th>
+                            <th>Thời gian GD</th>
+                        </thead>
+                        <tbody>
+                            <% for(var i=0; i < buyCardInfo.length; i++) {%>
+                                <tr>
+                                    <td><%= buyCardInfo[i].tennguoichoi %></td>
+                                    <td><%= buyCardInfo[i].sotiennap %></td>
+                                    <td><%= buyCardInfo[i].thoigian %></td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+     
+        <div class="col"></div>
+        
+    </div>
+
+    <div class="container">
+        <div class="row mt-5">
+            Bảng quy đổi giá tiền
+            <div class="col">
+                <img src="img/bangquydoixu.png" style
+                ="object-fit: contain;
+                object-position: center;
+                image-rendering: pixelated;
+                border: 1px solid blue;
+                border-radius: 10px;
+                margin-top: 10px;" alt="">
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script>
+    var socket = io();
+    let btn_accept = document.querySelector('#accept')
+    let tbody = document.querySelector('#table_req')
+    var data_user = '';
+    var default_tr = document.querySelector('#default_tr')
+
+
+  
+
+    socket.on('userOnline', (data)=>{
+        default_tr.style.display = 'none'
+        let tr = document.createElement('tr');
+        let td1 = document.createElement('td');
+        let td2 = document.createElement('td');
+        let td3 = document.createElement('td');
+
+        td1.innerText = data.nickname
+        td2.innerText = data.money + ' xu'
+        td3.innerHTML = "<i class='bx bx-check-circle bx-tada yes' style='color:#1be02a' data-id='"+data.socket_user+"'></i> &nbsp&nbsp&nbsp&nbsp<i class='bx bxs-x-square bx-flip-vertical bx-tada no' style='color:#e03b06'  ></i>";
+
+        tr.appendChild(td1)
+        tr.appendChild(td2)
+        tr.appendChild(td3)
+        
+        tbody.append(tr)
+        data_user = data;
+
+        let btn_yes = document.querySelectorAll('.yes')
+        let btn_no = document.querySelectorAll('.no')
+
+        btn_yes.forEach((item, index)=>{
+            item.addEventListener('click',(e)=>{
+                e.target.parentElement.parentElement.remove();
+                socket.emit('accept_buy_card', data_user)
+                alert('Nạp tiền thành công!')
+                setTimeout(()=>{
+                    location.reload();
+                },500)
+            })
+        })
+
+        btn_no.forEach((item, index)=>{
+            item.addEventListener('click',(e)=>{
+                e.target.parentElement.parentElement.remove();
+                socket.emit('deny_buy_card', data_user)
+                alert('Đã từ chối nạp tiền!')
+            })
+        })
+    })
+
+</script>
+</body>
+</html>
