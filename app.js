@@ -67,12 +67,10 @@ app.get('/login', (req, res)=>{
 })
 
 
-
-
 app.post('/login',urlencodedParser, (req, res)=>{
     const username_input = req.body.username;
     const password_input = req.body.password;
-
+    
     if(username_input === 'admin123' && password_input === 'admin456'){
         res.redirect('/admin');
     }else{
@@ -81,11 +79,15 @@ app.post('/login',urlencodedParser, (req, res)=>{
             .then((data)=>{
                 //Khi đã đúng tên tài khoản thì thực hiện chuyển trang
                 if(data){
+                    //Thực hiện lưu vào localStorage cho lần đăng nhập sau đó.
+                   
+                    // localStorage.setItem('remember_login',JSON.stringify(account_remember))
                     // res.render('mainScreen', {userInfo: data})
                     // res.session.dataUser = data
                     // console.log(data)
                     //Lay id cua tung user gan cho session
                     req.session.id_userData = data._id.toString();
+                    
                     res.redirect('/mainScreen');
                 }else{
                     res.render('login',{err_login: "Sai tên tài khoản hoặc mật khẩu !"})
@@ -200,6 +202,12 @@ io.on('connection', (socket) => {
         })
 
         socket.broadcast.emit('notification_joinRoom', userNameJoinRoom.nickname)
+
+        //Khi có người mới vào phòng sẽ tạo ra các element hiển thị trên giao diện bàn chơi
+        roomUserModel.find().then((data)=>{
+            socket.emit('createElementUser', data)
+        })
+
     })
 
 
