@@ -187,28 +187,40 @@ app.get('/admin',(req, res)=>{
     }).catch(()=>res.redirect('/404_page'))
 })
 
-var check_user_buy_card = 0;
+
+
 io.on('connection', (socket) => {
+    const roomUserModel = require('./model/roomUser');
     // console.log('Số người hiện đang kết nối '+ socket.client.conn.server.clientsCount)
     // console.log('Người chơi '+ socket.id)
 
     // Khi phát hiện có người tham gia vào phòng chơi
     socket.on('NewUserJoinRoom', (userNameJoinRoom)=>{
-        const roomUserModel = require('./model/roomUser');
         roomUserModel.create({
             nickname: userNameJoinRoom.nickname,
             tongxu: userNameJoinRoom.tongxu,
+            anhdaidien: userNameJoinRoom.anhdaidien,
             socketID :userNameJoinRoom.socketID
         })
 
         socket.broadcast.emit('notification_joinRoom', userNameJoinRoom.nickname)
 
-        //Khi có người mới vào phòng sẽ tạo ra các element hiển thị trên giao diện bàn chơi
-        roomUserModel.find().then((data)=>{
-            socket.emit('createElementUser', data)
-        })
-
     })
+
+
+    //Hàm tạo element 
+    //Khi có người mới vào phòng sẽ tạo ra các element hiển thị trên giao diện bàn chơi
+    function createElementUser(){
+        roomUserModel.find().then((data)=>{
+            io.emit('createElementUser', data)
+        })
+    }
+
+
+    //Hàm lặp lại hành động tạo phần tử sau 900 milisecond
+    setInterval(()=>{
+        createElementUser();
+    },2000)
 
 
     //Khi bấm vào nút xem người chơi trong phòng
@@ -219,11 +231,36 @@ io.on('connection', (socket) => {
         })
     })
 
-    check_user_buy_card++;
 
-    if(check_user_buy_card == 3){
-        socket.emit('waitingUser', 'fullUser')
-    }
+    //Xử lí chỉ nhận 1 người mua vé
+    socket.on('userbuycard',(data)=>{
+        let socketid = data;
+        const handlebuycard = require('./model/handlebuycard');
+
+        handlebuycard.count({}, function( err, count){
+            if(count > 0){
+                socket.emit('waitingUser', 'fullUser')
+            }else{
+                handlebuycard.create({
+                    socket_id : socketid
+                })
+            }
+        })
+    })
+
+    socket.on('outbuycard',()=>{
+        userCount --;
+        console.log(userCount)
+    })
+
+    // socket.on('userbuy_card',(data)=>{
+    //     if(data == 2){
+    //         socket.emit('waitingUser', 'fullUser')
+    //     }else{
+    //         userbuycard ++;
+    //     }
+    // })
+
 
     socket.on('userOnline', (data)=>{
         socket.broadcast.emit('userOnline', data)
@@ -264,9 +301,22 @@ io.on('connection', (socket) => {
     
     socket.on('disconnect', () => {
         const roomUserModel = require('./model/roomUser');
+        const handlebuycard = require('./model/handlebuycard');
+
+        handlebuycard.findOneAndRemove({socket_id: socket.id},
+            function (err, docs) {
+            if (err){
+                console.log(err)
+            }
+            else{
+                console.log(docs);
+            }
+        })
+
         roomUserModel.findOne({socketID: socket.id}).then((data)=>{ 
-            roomUserModel.findOneAndRemove({socketID: socket.id})
-            io.emit('user disconnected',data.nickname);
+            io.emit('user disconnected',data)});
+
+        setTimeout(()=>{
             roomUserModel.findOneAndRemove({socketID: socket.id},
                 function (err, docs) {
                 if (err){
@@ -275,10 +325,10 @@ io.on('connection', (socket) => {
                 else{
                     console.log(docs);
                 }
-        })
-    })
-
-        check_user_buy_card--;
+            })
+    
+        },1000)
+   
         console.log('Người chơi '+ socket.id + ' đã ngắt kết nối!');
     });
 });
@@ -312,6 +362,10 @@ app.get('/404_page',(req, res)=>{
     res.render('404_page')
 })
 
+
+app.get('*',(req, res)=>{
+    res.redirect('/404_page')
+})
 server.listen(3000, ()=>{
     console.log(`Ket noi thanh cong server voi cong port = ${port}`)
 })

@@ -106,3 +106,92 @@ table tbody td{
     overflow-y: scroll;
 }
 
+
+/* Css bên user bên trái */
+#left_user_show div:first-child{
+    margin-left: 20px;
+}
+
+
+
+#left_user_show div{
+    margin-top: 10px;
+}
+
+
+
+/* Css bên user bên phải */
+#right_user_show div:first-child{
+    margin-right: 20px;
+}
+
+
+#right_user_show div{
+    margin-top: 10px;
+}
+
+/* Hiệu chỉnh bàn cờ */
+#show_ban_co img{
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+#show_ban_co .col{
+    margin-top: 14px;
+}
+
+/* Css cho user trái, phải */
+#left_user_show > div, #right_user_show > div{
+    color: white;
+    display: inline-block;
+}
+
+#left_user_show > div > p, 
+#right_user_show > div > p{
+    margin: 0;
+    white-space: nowrap;
+    width: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#left_user_show > div > div#img_user,
+#right_user_show > div > div#img_user_right
+{
+    border:2px solid #7bd6e5; 
+    display: inline-block;
+    border-radius: 5px;
+}
+
+#left_user_show > div > div#img_user > img,
+#right_user_show > div > div#img_user_right > img
+{
+    width: 30px;
+    height: 30px;
+    border:1px solid #7bd6e5;
+    background-color: white;
+}
+
+#left_user_show #info_game_user,
+#right_user_show #info_game_user_right
+{
+    display: flex;
+    border-radius: 5px 5px 5px 5px;
+    background-color: #473639;
+    width: fit-content;
+    padding: -2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+#left_user_show #info_game_user img,
+#right_user_show #info_game_user_right img
+{
+    width: 15px;
+    height: 15px;
+}
+

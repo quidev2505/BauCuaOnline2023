@@ -113,7 +113,13 @@
  
     <script>
         var socket = io();
-        
+
+        //Khi phát hiện có người nhấn vào phòng mua thẻ - chỉ xử lí 1 sự kiện/lần
+        socket.on("connect", () => {
+            socket.emit('userbuycard', socket.id);
+        })
+
+
         let btn_buyCard = document.querySelectorAll('.btn-danger')
         let modal = document.querySelector('#modal_btn')
         var money = ''
@@ -167,6 +173,9 @@
             },1200)
         })
         
+        socket.on('outbuycard',()=>{
+            socket.emit('outbuycard')
+        })
 
         socket.on('waitingUser',(data)=>{
             alert('Vui lòng quay lại sau...')
