@@ -28,7 +28,7 @@
                     <div class=" tab-content clearfix mt-5">
                         <div class="tab-pane active" id="1a">
 
-                            <h6 class="text-start">Bảng tóm tắt yêu cầu nạp tiền từ người chơi</h6>
+                            <h6 class="text-start">Bảng tóm tắt yêu cầu nạp tiền từ người chơi (Xử lý 1 giao dịch / lần)</h6>
 
                             <table width="100%">
                                 <thead>
@@ -126,6 +126,14 @@
         </div>
 
         <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+        <!-- Hỗ trợ âm thanh cho game -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
         <script>
             var socket = io();
             let btn_accept = document.querySelector('#accept')
@@ -134,9 +142,15 @@
             var default_tr = document.querySelector('#default_tr')
             let notification_icon = document.querySelector('#notification')
 
+            // Tiếng chuông reo khi có thông báo
+            var sound = new Howl({
+                src: ['/audio/TiengTing.mp3']
+            });
+
 
             notification_icon.style.display = 'none'
             socket.on('userOnline', (data) => {
+                sound.play()
                 notification_icon.style.display = 'block'
                 default_tr.style.display = 'none'
                 let tr = document.createElement('tr');
@@ -165,6 +179,7 @@
                         alert('Nạp tiền thành công!')
                         setTimeout(() => {
                             location.reload();
+                            sound.pause()
                         }, 500)
                     })
                 })
@@ -175,30 +190,13 @@
                         socket.emit('deny_buy_card', data_user)
                         alert('Đã từ chối nạp tiền!')
                         notification_icon.style.display = 'none'
+                        sound.pause()
                     })
                 })
             })
 
-
-
         </script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
-
-        <!-- Xử lí âm thanh game -->
-        <script src="/path/to/howler.js"></script>
-        <script>
-            // import { Howl, Howler } from 'howler';
-            // // //Xử lí âm thanh game
-            // const { Howl, Howler } = require('howler');
-
-            // var sound = new Howl({
-            //     src: ['sound.mp3']
-            // });
-
-            // sound.play();
-        </script>
         </body>
 
         </html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>Hello</h2>
+    <button id="playmusic">Play</button>
+
+    <script src="./node_modules/howler/dist/howler.core.min.js"></script>
+    <script>
+        // const { Howl, Howler } = require('howler');
+        const btn = document.querySelector('#playmusic')
+
+        btn.addEventListener('click', () => {
+
+            sound.play();
+        })
+        var sound = new Howl({
+            src: ['./public/audio/Tieng-khi-keu-www_tiengdong_com.mp3']
+        });
+    </script>
+
+</body>
+
+</html>

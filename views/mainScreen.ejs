@@ -2,29 +2,34 @@
     <title>Màn hình chính</title>
     <div class="container text-center">
         <h2>Tài khoản cá nhân</h2>
-        <% if(typeof userInfo != 'undefined') {%>
+        <% if(typeof userInfo !='undefined' ) {%>
             <div class="alert alert-success" role="alert">
-                Xin chào, <span class="fw-bold"><%= userInfo.nickname%></span>
+                Xin chào, <span class="fw-bold">
+                    <%= userInfo.nickname%>
+                </span>
             </div>
             <div id="img_anhdaidien">
                 <img src="/uploads/<%= userInfo.anhdaidien%>" alt="">
             </div>
             <br>
-            <h3>Tổng xu hiện tại: <p><%= userInfo.tongxu %> xu ( <%= (userInfo.tongxu * 2000).toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) %>)</p></h3>
+            <h3>Tổng xu hiện tại: <p>
+                    <%= userInfo.tongxu %> xu ( <%= (userInfo.tongxu * 2000).toLocaleString('it-IT', {style : 'currency' , currency : 'VND' }) %>)
+                </p>
+            </h3>
 
-        <% } %> 
-        <br>
-        <br>
-        <a href="/buy_card" class="text-decoration-none">
-            <button type="button" class="btn btn-primary">Nạp xu</button>
-        </a>
-        <a href="/join_room" class="text-decoration-none">
-            <button type="button" class="btn btn-success">Vào phòng chơi</button>
-        </a>
-        <br>
-        <br>
-        <br>
-        <a href="/logout" class="text-decoration-none">Đăng Xuất</a>
+            <% } %>
+                <br>
+                <br>
+                <a href="/buy_card" class="text-decoration-none">
+                    <button type="button" class="btn btn-primary">Nạp xu</button>
+                </a>
+                <a href="/join_room" class="text-decoration-none">
+                    <button type="button" class="btn btn-success">Vào phòng chơi (9 người / phòng)</button>
+                </a>
+                <br>
+                <br>
+                <br>
+                <a href="/logout" class="text-decoration-none">Đăng Xuất</a>
     </div>
 
-<%- include('./partials/footer'); -%>
+    <%- include('./partials/footer'); -%>

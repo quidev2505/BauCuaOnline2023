@@ -361,6 +361,7 @@
         if (nicknameUser.innerText !== dataUser[i].nickname) {
           let div = document.createElement('div')
           if (i > 3) {
+            console.log('ben phai' + i)
             div.innerHTML = `
               <p>${dataUser[i].nickname}</p>
               <div id="img_user_right">
@@ -374,6 +375,7 @@
           `
             userInRight.append(div)
           } else if (i < 4) {
+            console.log('ben trai' + i)
             div.innerHTML = `
               <p>${dataUser[i].nickname}</p>
               <div id="img_user">
@@ -409,6 +411,8 @@
 
     });
 
+
+
     socket.on('user disconnected', (data) => {
       $.notify(`Người chơi "${data.nickname}" đã rời phòng !`, "warn", { clickToHide: true }).addStyle('font-weight', 'bold')('opacity', '0.6');
     })
@@ -417,7 +421,10 @@
       $.notify(`Người chơi "${data}" vừa tham gia phòng !`, "success").addStyle('font-weight', 'bold');
     })
 
-
+    socket.on('waitingUserInRoom', (data) => {
+      alert('Phòng đã đầy !')
+      window.location.href = 'mainScreen'
+    })
 
   </script>
   </body>

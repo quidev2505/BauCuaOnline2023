@@ -14,15 +14,20 @@ var session = require('express-session')
 const port = 3000
 
 //Xử lí âm thanh game với thư viện howler.js
-// import { Howl, Howler } from 'howler';
-// //Xử lí âm thanh game
-const { Howl, Howler } = require('howler');
+// const {Howl, Howler} = require('howler');
+// // Setup the new Howl.
+// const sound = new Howl({
+//   src: ['/audio/Tieng-khi-keu-www_tiengdong_com.mp3'],
+//   onload(){
+//     console.log('ok la')
+//   },
+//   onloaderror(e, msg){
+//     console.log('error', e, msg)
+//   }
+// });
 
-var sound = new Howl({
-    src: ['sound.mp3']
-});
-
-sound.play();
+// Play the sound.
+// sound.play();
 
 
 //Kết nối mongodb
@@ -208,16 +213,21 @@ io.on('connection', (socket) => {
 
     // Khi phát hiện có người tham gia vào phòng chơi
     socket.on('NewUserJoinRoom', (userNameJoinRoom)=>{
-        roomUserModel.create({
-            nickname: userNameJoinRoom.nickname,
-            tongxu: userNameJoinRoom.tongxu,
-            anhdaidien: userNameJoinRoom.anhdaidien,
-            socketID :userNameJoinRoom.socketID
-        })
-
-        socket.broadcast.emit('notification_joinRoom', userNameJoinRoom.nickname)
-
+        roomUserModel.count({}, function (err, count) {
+            console.log(count)
+          if (count > 1) {
+            socket.emit('waitingUserInRoom', 'fullUserInRoom')
+          } else {
+            roomUserModel.create({
+                nickname: userNameJoinRoom.nickname,
+                tongxu: userNameJoinRoom.tongxu,
+                anhdaidien: userNameJoinRoom.anhdaidien,
+                socketID :userNameJoinRoom.socketID
+            })
+            socket.broadcast.emit('notification_joinRoom', userNameJoinRoom.nickname)
+          }   
     })
+})
 
 
     //Hàm tạo element 
