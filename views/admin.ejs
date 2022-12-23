@@ -1,139 +1,204 @@
 <%- include('./partials/header'); -%>
-<title>Admin</title>
-<div class="container text-center">
-    <h2>Trang Admin</h2>
-
-    <h3>Danh sách người chơi có yêu cầu nạp tiền</h3>
-
-    <table width="100%">
-        <thead>
-            <th>Tên người chơi</th>
-            <th>Số tiền nạp</th>
-            <th>Hành động</th>
-        </thead>
-        <tbody id="table_req">
-            <tr id="default_tr">
-                <td colspan="3">Hiện tại không có giao dịch</td>
-            </tr>
-        </tbody>
-    </table>
-
-    
-    
-    <div class="row mt-5">
-        <div class="col">
-            <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="btnOpenModal">
-            Xem lịch sử giao dịch
-        </button>
-        
+    <title>Admin</title>
+    <div class="container text-center">
+        <div class="card text-center">
+            <div class="card-header">
+                <h2>Admin Game</h2>
+            </div>
+            <div class="card-body">
+                <div id="exTab1" class="container">
+                    <div class="row">
+                        <ul class="nav nav-pills d-flex flex-nowrap justify-content-between">
+                            <li class="active">
+                                <a href="#1a" class="text-decoration-none" data-toggle="tab">
+                                    <button type="button" class="btn btn-success" id="btn_buy_card">Quản lý nạp tiền</button>
+                                    <div id="notification">
+                                        <i class='bx bxs-bell-ring bx-rotate-90 bx-tada' style='color:red'></i>
+                                    </div>
+                                </a>
+                            </li>
+                            <li><a href="#2a" class="text-decoration-none" data-toggle="tab">
+                                    <button type="button" class="btn btn-primary">Quản lý phòng game</button>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
 
 
-        <!-- Modal -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Lịch sử giao dịch</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class=" tab-content clearfix mt-5">
+                        <div class="tab-pane active" id="1a">
+
+                            <h6 class="text-start">Bảng tóm tắt yêu cầu nạp tiền từ người chơi</h6>
+
+                            <table width="100%">
+                                <thead>
+                                    <th>Tên người chơi</th>
+                                    <th>Số tiền nạp</th>
+                                    <th>Hành động</th>
+                                </thead>
+                                <tbody id="table_req">
+                                    <tr id="default_tr">
+                                        <td colspan="3">Hiện tại không có giao dịch</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+
+                            <div class="row mt-5">
+                                <div class="col">
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="btnOpenModal">
+                                        Xem lịch sử giao dịch
+                                    </button>
+
+
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Lịch sử giao dịch</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <table width="100%">
+                                                        <thead>
+                                                            <th>Tên người chơi</th>
+                                                            <th>Số xu đã nạp</th>
+                                                            <th>Thời gian giao dịch</th>
+                                                        </thead>
+                                                        <tbody>
+                                                            <% for(var i=0; i < buyCardInfo.length; i++) {%>
+                                                                <tr>
+                                                                    <td>
+                                                                        <%= buyCardInfo[i].tennguoichoi %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= buyCardInfo[i].sotiennap %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= buyCardInfo[i].thoigian %>
+                                                                    </td>
+                                                                </tr>
+                                                                <% } %>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="container">
+                                <div class="row mt-5">
+                                    <h2 style="color:red">Bảng quy đổi xu</h2>
+                                    <div class="col">
+                                        <img src="img/bangquydoixu.png" style="object-fit: contain;
+                                object-position: center;
+                                image-rendering: pixelated;margin-left: -33px;
+                                border: 1px solid blue;
+                                border-radius: 10px;
+                                margin-top: 10px;" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Tab quản lý game -->
+                        <div class="tab-pane" id="2a">
+                            <h3>We use the class nav-pills instead of nav-tabs which automatically creates a background color for the tab</h3>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <table width="100%">
-                        <thead>
-                            <th>Tên người chơi</th>
-                            <th>Số tiền nạp</th>
-                            <th>Thời gian GD</th>
-                        </thead>
-                        <tbody>
-                            <% for(var i=0; i < buyCardInfo.length; i++) {%>
-                                <tr>
-                                    <td><%= buyCardInfo[i].tennguoichoi %></td>
-                                    <td><%= buyCardInfo[i].sotiennap %></td>
-                                    <td><%= buyCardInfo[i].thoigian %></td>
-                                </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
-                </div>
+
+
+
             </div>
-            </div>
+
+
+
+
         </div>
-        </div>
-     
-        <div class="col"></div>
-        
-    </div>
 
-    <div class="container">
-        <div class="row mt-5">
-            Bảng quy đổi giá tiền
-            <div class="col">
-                <img src="img/bangquydoixu.png" style
-                ="object-fit: contain;
-                object-position: center;
-                image-rendering: pixelated;
-                border: 1px solid blue;
-                border-radius: 10px;
-                margin-top: 10px;" alt="">
-            </div>
-        </div>
-    </div>
-    
-</div>
+        <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+        <script>
+            var socket = io();
+            let btn_accept = document.querySelector('#accept')
+            let tbody = document.querySelector('#table_req')
+            var data_user = '';
+            var default_tr = document.querySelector('#default_tr')
+            let notification_icon = document.querySelector('#notification')
 
 
-<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
-<script>
-    var socket = io();
-    let btn_accept = document.querySelector('#accept')
-    let tbody = document.querySelector('#table_req')
-    var data_user = '';
-    var default_tr = document.querySelector('#default_tr')
+            notification_icon.style.display = 'none'
+            socket.on('userOnline', (data) => {
+                notification_icon.style.display = 'block'
+                default_tr.style.display = 'none'
+                let tr = document.createElement('tr');
+                let td1 = document.createElement('td');
+                let td2 = document.createElement('td');
+                let td3 = document.createElement('td');
 
+                td1.innerText = data.nickname
+                td2.innerText = data.money + ' xu'
+                td3.innerHTML = "<i class='bx bx-check-circle bx-tada yes' style='color:#1be02a' data-id='" + data.socket_user + "'></i> &nbsp&nbsp&nbsp&nbsp<i class='bx bxs-x-square bx-flip-vertical bx-tada no' style='color:#e03b06'  ></i>";
 
-  
+                tr.appendChild(td1)
+                tr.appendChild(td2)
+                tr.appendChild(td3)
 
-    socket.on('userOnline', (data)=>{
-        default_tr.style.display = 'none'
-        let tr = document.createElement('tr');
-        let td1 = document.createElement('td');
-        let td2 = document.createElement('td');
-        let td3 = document.createElement('td');
+                tbody.append(tr)
+                data_user = data;
 
-        td1.innerText = data.nickname
-        td2.innerText = data.money + ' xu'
-        td3.innerHTML = "<i class='bx bx-check-circle bx-tada yes' style='color:#1be02a' data-id='"+data.socket_user+"'></i> &nbsp&nbsp&nbsp&nbsp<i class='bx bxs-x-square bx-flip-vertical bx-tada no' style='color:#e03b06'  ></i>";
+                let btn_yes = document.querySelectorAll('.yes')
+                let btn_no = document.querySelectorAll('.no')
 
-        tr.appendChild(td1)
-        tr.appendChild(td2)
-        tr.appendChild(td3)
-        
-        tbody.append(tr)
-        data_user = data;
+                btn_yes.forEach((item, index) => {
+                    item.addEventListener('click', (e) => {
+                        e.target.parentElement.parentElement.remove();
+                        socket.emit('accept_buy_card', data_user)
+                        alert('Nạp tiền thành công!')
+                        setTimeout(() => {
+                            location.reload();
+                        }, 500)
+                    })
+                })
 
-        let btn_yes = document.querySelectorAll('.yes')
-        let btn_no = document.querySelectorAll('.no')
-
-        btn_yes.forEach((item, index)=>{
-            item.addEventListener('click',(e)=>{
-                e.target.parentElement.parentElement.remove();
-                socket.emit('accept_buy_card', data_user)
-                alert('Nạp tiền thành công!')
-                setTimeout(()=>{
-                    location.reload();
-                },500)
+                btn_no.forEach((item, index) => {
+                    item.addEventListener('click', (e) => {
+                        e.target.parentElement.parentElement.remove();
+                        socket.emit('deny_buy_card', data_user)
+                        alert('Đã từ chối nạp tiền!')
+                        notification_icon.style.display = 'none'
+                    })
+                })
             })
-        })
 
-        btn_no.forEach((item, index)=>{
-            item.addEventListener('click',(e)=>{
-                e.target.parentElement.parentElement.remove();
-                socket.emit('deny_buy_card', data_user)
-                alert('Đã từ chối nạp tiền!')
-            })
-        })
-    })
 
-</script>
-</body>
-</html>
+
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+
+        <!-- Xử lí âm thanh game -->
+        <script src="/path/to/howler.js"></script>
+        <script>
+            // import { Howl, Howler } from 'howler';
+            // // //Xử lí âm thanh game
+            // const { Howl, Howler } = require('howler');
+
+            // var sound = new Howl({
+            //     src: ['sound.mp3']
+            // });
+
+            // sound.play();
+        </script>
+        </body>
+
+        </html>

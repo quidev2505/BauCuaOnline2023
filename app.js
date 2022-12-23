@@ -8,9 +8,21 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 
 
+//Xử lí form với body-parser
 var bodyParser = require('body-parser')
 var session = require('express-session')
 const port = 3000
+
+//Xử lí âm thanh game với thư viện howler.js
+// import { Howl, Howler } from 'howler';
+// //Xử lí âm thanh game
+const { Howl, Howler } = require('howler');
+
+var sound = new Howl({
+    src: ['sound.mp3']
+});
+
+sound.play();
 
 
 //Kết nối mongodb
