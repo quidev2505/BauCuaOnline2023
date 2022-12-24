@@ -89,6 +89,7 @@ app.post('/login',urlencodedParser, (req, res)=>{
     const password_input = req.body.password;
     
     if(username_input === 'admin123' && password_input === 'admin456'){
+        req.session.admin_login = 'admin_login'
         res.redirect('/admin');
     }else{
         var userModel = require('./model/userModel');
@@ -198,10 +199,14 @@ app.get('/404_page',(req, res)=>{
 
 //Trang admin
 app.get('/admin',(req, res)=>{
-    const buyCardModel = require('./model/buyCard');
-    buyCardModel.find().then((data)=>{
-        res.render('admin' , {buyCardInfo : data})
-    }).catch(()=>res.redirect('/404_page'))
+    if( typeof(req.session.admin_login) != 'undefined'){
+        const buyCardModel = require('./model/buyCard');
+        buyCardModel.find().then((data)=>{
+            res.render('admin' , {buyCardInfo : data})
+        }).catch(()=>res.redirect('/404_page'))
+    }else{
+        res.redirect('/')
+    }
 })
 
 
@@ -215,7 +220,7 @@ io.on('connection', (socket) => {
     socket.on('NewUserJoinRoom', (userNameJoinRoom)=>{
         roomUserModel.count({}, function (err, count) {
             console.log(count)
-          if (count > 1) {
+          if (count > 8) {
             socket.emit('waitingUserInRoom', 'fullUserInRoom')
           } else {
             roomUserModel.create({
@@ -226,8 +231,35 @@ io.on('connection', (socket) => {
             })
             socket.broadcast.emit('notification_joinRoom', userNameJoinRoom.nickname)
           }   
+        })
     })
-})
+
+
+    //Quản lí action game
+    //Khi admin nhấn bắt đầu game
+    socket.on('action1',()=>{
+        console.log('admin đã nhấn')
+        io.emit('action1FromAdmin')
+    })
+
+     //Khi admin nhấn vào nút dừng
+     socket.on('action2',()=>{
+        io.emit('action2FromAdmin')
+    })
+
+
+    socket.on('action3',()=>{
+        io.emit('action3FromAdmin')
+    })
+
+    socket.on('action4',()=>{
+        io.emit('action4FromAdmin')
+    })
+    socket.on('action5',()=>{
+        io.emit('action5FromAdmin')
+    })
+
+
 
 
     //Hàm tạo element 
@@ -239,10 +271,18 @@ io.on('connection', (socket) => {
     }
 
 
+    //Đếm số người chơi trong phòng
+    function countNumberUser(){
+        roomUserModel.count({}, function( err, count){
+            io.emit('countNumberUser', count)
+        })
+    }
+
     //Hàm lặp lại hành động tạo phần tử sau 900 milisecond
     setInterval(()=>{
         createElementUser();
-    },2000)
+        countNumberUser();
+    },1300)
 
 
     //Khi bấm vào nút xem người chơi trong phòng

@@ -111,7 +111,34 @@
                         </div>
                         <!-- Tab quản lý game -->
                         <div class="tab-pane" id="2a">
-                            <h3>We use the class nav-pills instead of nav-tabs which automatically creates a background color for the tab</h3>
+                            <p class="fw-bold">Danh sách người chơi trong phòng</p>
+                            <div id="userinroom" class="border border-primary" style="padding: 5px;border-radius: 5px;">
+
+                            </div>
+
+                            <h6 class="mt-3">Quản lí màn chơi bầu cua</h6>
+                            <!-- Quản lí hành động game -->
+                            <div id="action_game" class="d-flex align-items-start flex-column border border-primary" style="padding: 5px;border-radius: 5px;">
+                                <div id="lagRandomNumber">
+                                    <button type="button" class="btn btn-info" id="startGame_and_remix_randomNumber">1. Lắc Xí Ngầu</button>
+                                </div>
+                                <br>
+                                <div id="stop_mix_randomNumber">
+                                    <button type="button" class="btn btn-dark" id="stop_mix_randomNumber">2. Dừng lắc xí ngầu</button>
+                                </div>
+                                <br>
+                                <div id="waitingforUserPlay">
+                                    <button type="button" class="btn btn-success" id="waitingforUserPlay">3. Bắt đầu đặt cược</button>
+                                </div>
+                                <br>
+                                <div id="openNewRandomNumber">
+                                    <button type="button" class="btn btn-warning" id="openNewRandomNumber">4. Mở xí ngầu</button>
+                                </div>
+                                <br>
+                                <div id="play_new_round_game">
+                                    <button type="button" class="btn btn-secondary" id="play_new_round_game">5. Bắt đầu lại ván mới</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -142,11 +169,67 @@
             var default_tr = document.querySelector('#default_tr')
             let notification_icon = document.querySelector('#notification')
 
+
+
+            let userinroom = document.querySelector('#userinroom')
             // Tiếng chuông reo khi có thông báo
             var sound = new Howl({
                 src: ['/audio/TiengTing.mp3']
             });
 
+
+
+
+            //Quản lí màn chơi bầu cua
+            // Sẽ có 4 hành động Admin cần bấm
+            // 1. Nhấn vào nút lắc xí ngầu
+            // 2. Bấm vào nút dừng
+            // 3. Đợi người chơi đặt cược 
+            // 4. Nhấn mở xí ngầu
+            // 5. Nhấn vào nút bắt đầu màn chơi mới
+
+
+            let lagRandomNumber = document.querySelector('#lagRandomNumber')
+            let stop_mix_randomNumber = document.querySelector('#stop_mix_randomNumber')
+            let waitingforUserPlay = document.querySelector('#waitingforUserPlay')
+            let openNewRandomNumber = document.querySelector('#openNewRandomNumber')
+            let play_new_round_game = document.querySelector('#play_new_round_game')
+
+            //Nhấn nút lắc xúc xắc
+            lagRandomNumber.addEventListener('click', () => {
+                socket.emit('action1');
+            })
+
+            //Nhấn nút dừng
+            stop_mix_randomNumber.addEventListener('click', () => {
+                socket.emit('action2');
+            })
+
+            //Nhấn nút chờ người chơi đặt cược
+            waitingforUserPlay.addEventListener('click', () => {
+                socket.emit('action3');
+            })
+
+            //Nhấn nút mở xúc xắc
+            openNewRandomNumber.addEventListener('click', () => {
+                socket.emit('action4');
+            })
+
+            //Nhấn nút bắt đầu ván chơi mới
+            play_new_round_game.addEventListener('click', () => {
+                socket.emit('action5');
+            })
+
+
+            socket.on('createElementUser', (data) => {
+                userinroom.innerHTML = ''
+                data.forEach((item, index) => {
+                    let div = document.createElement('div')
+                    div.style.borderColor = '#ccc';
+                    div.innerHTML = `<p>${index + 1}. ${item.nickname} - ${item.tongxu} xu</p>`
+                    userinroom.appendChild(div)
+                })
+            })
 
             notification_icon.style.display = 'none'
             socket.on('userOnline', (data) => {

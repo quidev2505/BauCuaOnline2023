@@ -1,12 +1,13 @@
 <%- include('./partials/header'); -%>
   <title>Phòng Chơi</title>
+
   <div style="background-color:
 #7d0301;height:100vh">
     <div class="container d-flex flex-column justify-content-between" id="roomGame" style="height: 95vh;">
       <% if(typeof userInfo !==undefined){%>
         <header class="row d-flex flex-column" style="flex-wrap: no-wrap">
           <!-- <button id="zoomIn">Phóng to</button>
-      <button id="zoomOut">Thu nhỏ</button> -->
+               <button id="zoomOut">Thu nhỏ</button> -->
           <a href="/mainScreen" class="fs-3" style="width:fit-content;margin-right:auto">
             <img src="./img/left-arrow.png" alt="" style="    width: 35px;
         height: 35px;
@@ -14,39 +15,47 @@
         object-position: center;">
           </a>
 
-          <main style="height: 10vh;width: fit-content;">
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-success" id="btn_show_user" data-bs-toggle="modal" data-bs-target="#exampleModal" style="    height: 50px;
-        width: 50px;
-        margin-top: 10px;
-        /* width: fit-content; */
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #56c923;">
-              <img src="./img/list.png" alt="" style="    width: 35px;
-          height: 35px;
-          object-fit: contain;
-          object-position: center;">
-            </button>
 
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Đang trực tuyến</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body" id="userinroom">
+          <div class="d-flex  align-items-center">
+            <main style="height: 10vh;width: fit-content;">
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-success" id="btn_show_user" data-bs-toggle="modal" data-bs-target="#exampleModal" style="    height: 50px;
+          width: 50px;
+          margin-top: 10px;
+          /* width: fit-content; */
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #56c923;">
+                <span id="countUser">1</span>/9
+                <!-- <img src="./img/list.png" alt="" style="    width: 35px;
+            height: 35px;
+            object-fit: contain;
+            object-position: center;"> -->
+              </button>
 
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Đang trực tuyến</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="userinroom">
+
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-          </main>
+            </main>
+
+            <div id="actionGame" style="color:white;text-align: center;margin-left: 10px;">
+              <h2 id="statusGame">Chờ Admin bắt đầu ván !</h2>
+            </div>
+          </div>
 
         </header>
 
@@ -64,7 +73,7 @@
           <div id="show_ban_co" style="display: flex;align-items: center;">
             <div class="container">
               <div class="row row-cols-3" style="    margin-top: 106px;
-              margin-left: -53px;">
+       ">
                 <div class="col">
                   <img src="./img/nai.png" alt="">
                 </div>
@@ -321,8 +330,48 @@
     //   }
     // })
 
-
     var socket = io();
+    //Quản lí trạng thái phòng Game
+    var statusGame = document.querySelector('#statusGame')
+    var array_status_game = ['Lắc xí ngầu',
+      'Dừng Lắc Xí Ngầu', 'Bắt đầu đặt cược', 'Mở xí ngầu', 'Bắt đầu ván chơi mới!'];
+
+    //Khi admin nhấn bắt đầu game
+    socket.on('action1FromAdmin', () => {
+      statusGame.innerText = array_status_game[0]
+    })
+
+    //Khi admin nhấn vào nút dừng
+    socket.on('action2FromAdmin', () => {
+      statusGame.innerText = array_status_game[1]
+    })
+
+
+    //Khi admin nhấn vào nút bắt đầu đặt cược
+    socket.on('action3FromAdmin', () => {
+      statusGame.innerText = array_status_game[2]
+    })
+
+    //Khi admin nhấn vào nút mở xí ngầu
+    socket.on('action4FromAdmin', () => {
+      statusGame.innerText = array_status_game[3]
+    })
+
+    //Khi admin nhấn vào nút bắt đầu ván chơi mới
+    socket.on('action5FromAdmin', () => {
+      statusGame.innerText = array_status_game[4]
+    })
+
+
+
+    //Đếm số người chơi hiển thị lên giao diện
+    var countUser = document.querySelector('#countUser');
+
+
+    let rightUsershow = document.querySelector('#right_user_show');
+    rightUsershow.style.opacity = '0'
+
+
     let userinroom = document.querySelector('#userinroom')
     let btnshowuser = document.querySelector('#btn_show_user')
 
@@ -346,6 +395,10 @@
       )
 
     })
+
+    // setInterval(() => {
+    //   countUser.innerText = remember_number
+    // }, 1000)
 
     //Khi có người mới tham gia vào phòng chơi sẽ render giao diện người chơi tham gia vào bàn chơi bầu cua
     socket.on('createElementUser', (dataUser) => {
@@ -393,6 +446,10 @@
     })
 
 
+    socket.on('countNumberUser', (data) => {
+      countUser.innerText = data;
+    })
+
     socket.on("connect", () => {
       //Khi có người chơi mới kết nối vào phòng sẽ gửi qua cho server biết
       const nickname = document.querySelector('#nickname_user')
@@ -408,7 +465,6 @@
       }
 
       socket.emit('NewUserJoinRoom', roomUser)
-
     });
 
 
@@ -425,6 +481,8 @@
       alert('Phòng đã đầy !')
       window.location.href = 'mainScreen'
     })
+
+
 
   </script>
   </body>
