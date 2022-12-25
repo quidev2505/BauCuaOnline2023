@@ -227,6 +227,14 @@ background-color: white;
 padding : 5px 15px;
 }
 
+
+
+/* Xử lí khi đặt đồng xu trong game */
+#show_ban_co .col{
+    position: relative;
+
+}
+
   
 
 /* Chuông thông báo khi có giao dịch */
@@ -244,3 +252,6 @@ padding : 5px 15px;
     left: -8px;
     position: absolute;
 }
+
+
+/* Xử lí chọn số lượng xu đặt cược */

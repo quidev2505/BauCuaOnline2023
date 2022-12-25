@@ -1,8 +1,11 @@
 <%- include('./partials/header'); -%>
   <title>Phòng Chơi</title>
 
-  <div style="background-color:
-#7d0301;height:100vh">
+  <div style="    background-image: url(./img/hinhnen.png);
+  height: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;">
     <div class="container d-flex flex-column justify-content-between" id="roomGame" style="height: 95vh;">
       <% if(typeof userInfo !==undefined){%>
         <header class="row d-flex flex-column" style="flex-wrap: no-wrap">
@@ -53,7 +56,7 @@
             </main>
 
             <div id="actionGame" style="color:white;text-align: center;margin-left: 10px;">
-              <h2 id="statusGame">Chờ Admin bắt đầu ván !</h2>
+              <h2 id="statusGame"></h2>
             </div>
           </div>
 
@@ -70,27 +73,27 @@
           </div>
 
           <!-- Hiển thị bàn cờ -->
-          <div id="show_ban_co" style="display: flex;align-items: center;">
+          <div id="show_ban_co" style="display: flex;align-items: center;margin:2px">
             <div class="container">
-              <div class="row row-cols-3" style="    margin-top: 106px;
+              <div class="row row-cols-3" style="    margin-top: 106px;border:2px solid orange;border-radius: 5px;
        ">
                 <div class="col">
-                  <img src="./img/nai.png" alt="">
+                  <img src="./img/nai.png" class="cell_chess" data-index="nai">
                 </div>
                 <div class="col">
-                  <img src="./img/bau.png" alt="">
+                  <img src="./img/bau.png" class="cell_chess" data-index="bau">
                 </div>
                 <div class="col">
-                  <img src="./img/ga.png" alt="">
+                  <img src="./img/ga.png" class="cell_chess" data-index="ga">
                 </div>
                 <div class="col">
-                  <img src="./img/ca.png" alt="">
+                  <img src="./img/ca.png" class="cell_chess" data-index="ca">
                 </div>
                 <div class="col">
-                  <img src="./img/cua.png" alt="">
+                  <img src="./img/cua.png" class="cell_chess" data-index="cua">
                 </div>
                 <div class="col">
-                  <img src="./img/tom.png" alt="">
+                  <img src="./img/tom.png" class="cell_chess" data-index="tom">
                 </div>
               </div>
             </div>
@@ -106,7 +109,7 @@
               </div>
               <div id="info_game_user_right">
                 <span>6</span>
-                <img src="img/—Pngtree—coin_486815.png" alt="">
+                <img src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
               </div>
             </div>
 
@@ -139,7 +142,7 @@
                 <img style="
                   width: 15px;
                   height: 15px;
-              " src="img/—Pngtree—coin_486815.png" alt="">
+              " src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
               </div>
             </div>
 
@@ -172,7 +175,7 @@
                 <img style="
                   width: 15px;
                   height: 15px;
-              " src="img/—Pngtree—coin_486815.png" alt="">
+              " src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
               </div>
             </div>
 
@@ -205,7 +208,7 @@
                 <img style="
                   width: 15px;
                   height: 15px;
-              " src="img/—Pngtree—coin_486815.png" alt="">
+              " src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
               </div>
             </div>
           </div>
@@ -253,13 +256,13 @@
                       <img style="
                   width: 30px;
                   height: 30px;
-              " src="img/—Pngtree—coin_486815.png" alt="">
+              " src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
                   </div>
                 </div>
               </div>
 
               <div class="row d-flex" style="flex-wrap: nowrap;background-color: #334464 ;padding: 7px;">
-                <div class="col" style="padding-left: 0;">
+                <div class="col coinChoose" style="padding-left: 0;">
                   <button type="button" style="width:57px;color:black;background-color: yellow;" class="btn btn-danger"><span style="
                     display: flex;
                     font-size: 22px;
@@ -268,10 +271,10 @@
                       <img style="
                     width: 30px;
                     height: 30px;
-                " src="img/—Pngtree—coin_486815.png" alt="">
+                " src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
                     </span> </button>
                 </div>
-                <div class="col">
+                <div class="col coinChoose">
                   <button type="button" style="width:57px;color:black;background-color: yellow;" class="btn btn-danger"><span style="
                     display: flex;
                     font-size: 22px;
@@ -280,10 +283,10 @@
                       <img style="
                     width: 30px;
                     height: 30px;
-                " src="img/—Pngtree—coin_486815.png" alt="">
+                " src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
                     </span> </button>
                 </div>
-                <div class="col" style="padding-right: 0;">
+                <div class="col coinChoose" style="padding-right: 0;">
                   <button type="button" style="width:57px;color:black;background-color: yellow;" class="btn btn-danger"><span style="
                     display: flex;
                     font-size: 22px;
@@ -292,7 +295,7 @@
                       <img style="
                     width: 30px;
                     height: 30px;
-                " src="img/—Pngtree—coin_486815.png" alt="">
+                " src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
                     </span> </button>
                 </div>
 
@@ -331,35 +334,62 @@
     // })
 
     var socket = io();
-    //Quản lí trạng thái phòng Game
+
+
+    //Quản lí chơi bầu cua
+    // Tổng cộng Admin sẽ có 3 hành động
+    // 1.Admin nhấn bắt đầu -> Sẽ lắc xúc xắc -> Cho thời gian đặt cược (20 giây) -> Hết thời gian đặt cược -> Tự khui xúc xắc -> Phát thưởng
+    // 2.Admin nhấn vào bắt đầu lại trò chơi
+
     var statusGame = document.querySelector('#statusGame')
-    var array_status_game = ['Lắc xí ngầu',
-      'Dừng Lắc Xí Ngầu', 'Bắt đầu đặt cược', 'Mở xí ngầu', 'Bắt đầu ván chơi mới!'];
+    var array_status_game = ['Chờ Admin bắt đầu ván !', 'Lắc xúc xắc',
+      'Đặt cược đi !', 'Hết giờ đặt cược', 'Khui nha', 'Trao thưởng', 'Ván mới bắt đầu sau 3 giây...'];
+
+    statusGame.innerText = array_status_game[0]
 
     //Khi admin nhấn bắt đầu game
     socket.on('action1FromAdmin', () => {
-      statusGame.innerText = array_status_game[0]
-    })
-
-    //Khi admin nhấn vào nút dừng
-    socket.on('action2FromAdmin', () => {
+      //5 giai đoạn
       statusGame.innerText = array_status_game[1]
     })
 
-
-    //Khi admin nhấn vào nút bắt đầu đặt cược
-    socket.on('action3FromAdmin', () => {
-      statusGame.innerText = array_status_game[2]
-    })
-
-    //Khi admin nhấn vào nút mở xí ngầu
-    socket.on('action4FromAdmin', () => {
-      statusGame.innerText = array_status_game[3]
-    })
-
     //Khi admin nhấn vào nút bắt đầu ván chơi mới
-    socket.on('action5FromAdmin', () => {
-      statusGame.innerText = array_status_game[4]
+    socket.on('action2FromAdmin', () => {
+      statusGame.innerText = array_status_game[6]
+    })
+
+
+    //Hàm tạo hiệu ứng đồng xu
+    function createCoin() {
+      let img = document.createElement('img')
+      let randomPosition = Math.floor(Math.random() * 10);
+      let randomdegree = Math.floor(Math.random() * 10);
+      img.style.width = '30px';
+      img.style.height = '30px';
+      img.setAttribute('src', './img/—Pngtree—blue round glossy gold coin_4464212.png')
+      img.style.position = 'absolute';
+      img.style.transform = `rotate(${randomdegree}deg) translate(${randomPosition}px,${randomPosition}px)`;
+      img.style.top = '30%'
+      img.style.left = '50%'
+      return img
+    }
+
+    //Xử lí tạo ảnh đồng xu hiển thị trên màn hình từng ô bầu cua
+    const getAllCell = document.querySelectorAll('.cell_chess')
+    getAllCell.forEach((item, index) => {
+      item.addEventListener('click', (e) => {
+        let newCoin = createCoin();
+        e.target.parentElement.appendChild(newCoin);
+      })
+    })
+
+
+    //Xử lí chọn số lượng xu cần đặt
+    let chooseNumberCoin = document.querySelectorAll('.coinChoose')
+    chooseNumberCoin.forEach((item, index) => {
+      item.addEventListener('click', (e) => {
+        e.target.style.fontSize = '25px'
+      })
     })
 
 
@@ -369,7 +399,6 @@
 
 
     let rightUsershow = document.querySelector('#right_user_show');
-    rightUsershow.style.opacity = '0'
 
 
     let userinroom = document.querySelector('#userinroom')
@@ -402,19 +431,20 @@
 
     //Khi có người mới tham gia vào phòng chơi sẽ render giao diện người chơi tham gia vào bàn chơi bầu cua
     socket.on('createElementUser', (dataUser) => {
-      let userinTable = document.querySelector('#userinTable');
-      let userInLeft = document.querySelector('#left_user_show');
-      let userInRight = document.querySelector('#right_user_show');
-      let nicknameUser = document.querySelector('#nickname_user')
+      var userInLeft = document.querySelector('#left_user_show');
+      var userInRight = document.querySelector('#right_user_show');
+      var nicknameUser = document.querySelector('#nickname_user')
 
       userInLeft.innerHTML = ''
       userInRight.innerHTML = ''
 
       for (let i = 0; i < dataUser.length; i++) {
-        if (nicknameUser.innerText !== dataUser[i].nickname) {
-          let div = document.createElement('div')
-          if (i > 3) {
-            console.log('ben phai' + i)
+        let div = document.createElement('div')
+        if (i > 3) {
+          if (nicknameUser.innerText === dataUser[i].nickname) {
+            i++;
+          }
+          if (dataUser[i] != 'undefined') {
             div.innerHTML = `
               <p>${dataUser[i].nickname}</p>
               <div id="img_user_right">
@@ -422,13 +452,19 @@
               </div>
               <div id="info_game_user_right">
                 <span>${dataUser[i].tongxu}</span>
-                <img src="img/—Pngtree—coin_486815.png" alt="">
+                <img src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
               </div>
             </div>
           `
-            userInRight.append(div)
-          } else if (i < 4) {
-            console.log('ben trai' + i)
+            userInRight.appendChild(div)
+          }
+
+        }
+        else {
+          if (nicknameUser.innerText === dataUser[i].nickname) {
+            i++;
+          }
+          if (dataUser[i] != 'undefined') {
             div.innerHTML = `
               <p>${dataUser[i].nickname}</p>
               <div id="img_user">
@@ -436,10 +472,10 @@
               </div>
               <div id="info_game_user">
                 <span>${dataUser[i].tongxu}</span>
-                <img src="img/—Pngtree—coin_486815.png" alt="">
+                <img src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
               </div>
           `
-            userInLeft.append(div)
+            userInLeft.appendChild(div)
           }
         }
       }

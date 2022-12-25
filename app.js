@@ -235,28 +235,19 @@ io.on('connection', (socket) => {
     })
 
 
-    //Quản lí action game
+        //Quản lí chơi bầu cua
+    // Tổng cộng Admin sẽ có 3 hành động
+    // 1.Admin nhấn bắt đầu -> Sẽ lắc xúc xắc -> Cho thời gian đặt cược (20 giây) -> Hết thời gian đặt cược -> Tự khui xúc xắc -> Phát thưởng
+    // 2.Admin nhấn vào bắt đầu lại trò chơi
+
     //Khi admin nhấn bắt đầu game
     socket.on('action1',()=>{
-        console.log('admin đã nhấn')
         io.emit('action1FromAdmin')
     })
 
-     //Khi admin nhấn vào nút dừng
-     socket.on('action2',()=>{
+    //Khi Admin nhấn vào bắt đầu lại màn chơi
+    socket.on('action2',()=>{
         io.emit('action2FromAdmin')
-    })
-
-
-    socket.on('action3',()=>{
-        io.emit('action3FromAdmin')
-    })
-
-    socket.on('action4',()=>{
-        io.emit('action4FromAdmin')
-    })
-    socket.on('action5',()=>{
-        io.emit('action5FromAdmin')
     })
 
 
@@ -269,7 +260,7 @@ io.on('connection', (socket) => {
             io.emit('createElementUser', data)
         })
     }
-
+  
 
     //Đếm số người chơi trong phòng
     function countNumberUser(){
@@ -282,7 +273,7 @@ io.on('connection', (socket) => {
     setInterval(()=>{
         createElementUser();
         countNumberUser();
-    },1300)
+    },1100)
 
 
     //Khi bấm vào nút xem người chơi trong phòng
