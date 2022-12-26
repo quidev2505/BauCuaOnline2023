@@ -1,7 +1,7 @@
 <%- include('./partials/header'); -%>
   <title>Phòng Chơi</title>
 
-  <div style="    background-image: url(./img/hinhnen.png);
+  <div style="    background-color: black;
   height: 100vh;
   background-position: center;
   background-repeat: no-repeat;
@@ -109,7 +109,7 @@
               </div>
               <div id="info_game_user_right">
                 <span>6</span>
-                <img src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
+                <img src="img/coin.png" alt="">
               </div>
             </div>
 
@@ -142,7 +142,7 @@
                 <img style="
                   width: 15px;
                   height: 15px;
-              " src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
+              " src="img/coin.png" alt="">
               </div>
             </div>
 
@@ -175,7 +175,7 @@
                 <img style="
                   width: 15px;
                   height: 15px;
-              " src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
+              " src="img/coin.png" alt="">
               </div>
             </div>
 
@@ -208,7 +208,7 @@
                 <img style="
                   width: 15px;
                   height: 15px;
-              " src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
+              " src="img/coin.png" alt="">
               </div>
             </div>
           </div>
@@ -228,6 +228,7 @@
                   border-radius: 10px;
                   object-fit: cover;
                   border: 3px solid #3396c5" src="/uploads/<%= userInfo.anhdaidien%>" alt="" width="50px" height="50px" id="anhdaidien">
+                  <button id="restart_order" type="button" class="btn btn-danger mt-2 mb-2">Đặt lại</button>
 
                 </div>
 
@@ -236,6 +237,7 @@
                     <p id="nickname_user" style="color:#66b4bf;font-weight: bold;margin-bottom: 5px;">
                       <%= userInfo.nickname%>
                     </p>
+
                   </div>
                   <div class="row">
                     <p style="
@@ -246,6 +248,7 @@
                     background-color: #313851;
                     padding: 5px 0 5px 10px;
                 ">
+
                       <span id="tongxu" style="
                         color: #dbd956;
                         font-weight: bold;
@@ -256,46 +259,48 @@
                       <img style="
                   width: 30px;
                   height: 30px;
-              " src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
+              " src="img/coin.png" alt="">
                   </div>
+
+
                 </div>
               </div>
 
               <div class="row d-flex" style="flex-wrap: nowrap;background-color: #334464 ;padding: 7px;">
-                <div class="col coinChoose" style="padding-left: 0;">
-                  <button type="button" style="width:57px;color:black;background-color: yellow;" class="btn btn-danger"><span style="
+                <div class="col coinChoose" style="padding-left: 0;" data-index="1">
+                  <button type="button" style="width:57px;color:black;background-color: yellow;" class="btn btn-danger" data-index="1"><span style="
                     display: flex;
                     font-size: 22px;
                     font-weight: bold;
-                ">1
+                " data-index="1">1
                       <img style="
                     width: 30px;
                     height: 30px;
-                " src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
+                " src="img/coin.png" alt="" data-index="1">
                     </span> </button>
                 </div>
-                <div class="col coinChoose">
-                  <button type="button" style="width:57px;color:black;background-color: yellow;" class="btn btn-danger"><span style="
+                <div class="col coinChoose" data-index="3">
+                  <button type="button" style="width:57px;color:black;background-color: yellow;" class="btn btn-danger" data-index="3"><span style="
                     display: flex;
                     font-size: 22px;
                     font-weight: bold;
-                ">3
+                " data-index="3">3
                       <img style="
                     width: 30px;
                     height: 30px;
-                " src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
+                " src="img/coin.png" alt="" data-index="3">
                     </span> </button>
                 </div>
-                <div class="col coinChoose" style="padding-right: 0;">
-                  <button type="button" style="width:57px;color:black;background-color: yellow;" class="btn btn-danger"><span style="
+                <div class="col coinChoose" style="padding-right: 0;" data-index="5">
+                  <button type="button" style="width:57px;color:black;background-color: yellow;" class="btn btn-danger" data-index="5"><span style="
                     display: flex;
                     font-size: 22px;
                     font-weight: bold;
-                ">5
+                " data-index="5">5
                       <img style="
                     width: 30px;
                     height: 30px;
-                " src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
+                " src="img/coin.png" alt="" data-index="5">
                     </span> </button>
                 </div>
 
@@ -308,7 +313,10 @@
     </div>
   </div>
 
-
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.js" integrity="sha512-NMtENEqUQ8zHZWjwLg6/1FmcTWwRS2T5f487CCbQB3pQwouZfbrQfylryimT3XvQnpE7ctEKoZgQOAkWkCW/vg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="/socket.io/socket.io.js"></script>
@@ -364,33 +372,71 @@
       let img = document.createElement('img')
       let randomPosition = Math.floor(Math.random() * 10);
       let randomdegree = Math.floor(Math.random() * 10);
+      img.setAttribute('data-aos', "fade-up")
       img.style.width = '30px';
       img.style.height = '30px';
-      img.setAttribute('src', './img/—Pngtree—blue round glossy gold coin_4464212.png')
+      img.setAttribute('src', './img/coin.png')
       img.style.position = 'absolute';
-      img.style.transform = `rotate(${randomdegree}deg) translate(${randomPosition}px,${randomPosition}px)`;
-      img.style.top = '30%'
+      img.style.transform = `rotate(${randomdegree}deg) translate(${randomPosition}px,-${randomPosition}px)`;
+      img.style.top = '45%'
       img.style.left = '50%'
       return img
     }
 
-    //Xử lí tạo ảnh đồng xu hiển thị trên màn hình từng ô bầu cua
-    const getAllCell = document.querySelectorAll('.cell_chess')
-    getAllCell.forEach((item, index) => {
-      item.addEventListener('click', (e) => {
-        let newCoin = createCoin();
-        e.target.parentElement.appendChild(newCoin);
-      })
-    })
 
+    var number_coin_order = 0;
+    let restartOrder = document.querySelector('#restart_order');
 
     //Xử lí chọn số lượng xu cần đặt
     let chooseNumberCoin = document.querySelectorAll('.coinChoose')
     chooseNumberCoin.forEach((item, index) => {
       item.addEventListener('click', (e) => {
-        e.target.style.fontSize = '25px'
+        number_coin_order = e.target.dataset.index;
+        // e.target.parentElement.parentElement.style.color = 'red'
       })
     })
+
+
+    // Lấy giá trị tổng xu của người chơi
+    let tongxu = document.querySelector('#tongxu')
+    //Check đặt giới hạn 25 xu
+    var xuOrder = 0;
+
+    //Xử lí tạo ảnh đồng xu hiển thị trên màn hình từng ô bầu cua
+    const getAllCell = document.querySelectorAll('.cell_chess')
+    getAllCell.forEach((item, index) => {
+      item.addEventListener('click', (e) => {
+        if (number_coin_order == 0) {
+          alert('Vui lòng chọn số lượng xu cần đặt trước !')
+        } else {
+          xuOrder += parseInt(number_coin_order)
+          if (xuOrder > 25) {
+            alert('Chỉ được đặt tối đa 25 xu !')
+            return false;
+          }
+          console.log(xuOrder)
+          tongxu.innerText = parseInt(tongxu.innerText) - parseInt(number_coin_order);
+          for (let i = 0; i < number_coin_order; i++) {
+            let newCoin = createCoin();
+            e.target.parentElement.appendChild(newCoin);
+          }
+        }
+      })
+    })
+
+
+
+    //Xử lí khi nhấn vào nút đặt lại
+    restartOrder.addEventListener('click', () => {
+      let allcoin = document.querySelectorAll('.aos-init');
+      allcoin.forEach((item, index) => {
+        xuOrder = 0;
+        item.remove()
+      })
+    })
+
+
+
 
 
 
@@ -452,7 +498,7 @@
               </div>
               <div id="info_game_user_right">
                 <span>${dataUser[i].tongxu}</span>
-                <img src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
+                <img src="img/coin.png" alt="">
               </div>
             </div>
           `
@@ -472,7 +518,7 @@
               </div>
               <div id="info_game_user">
                 <span>${dataUser[i].tongxu}</span>
-                <img src="img/—Pngtree—blue round glossy gold coin_4464212.png" alt="">
+                <img src="img/coin.png" alt="">
               </div>
           `
             userInLeft.appendChild(div)

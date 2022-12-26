@@ -255,3 +255,6 @@ padding : 5px 15px;
 
 
 /* Xử lí chọn số lượng xu đặt cược */
+body{
+    overflow-x: hidden;
+}
