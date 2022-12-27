@@ -258,3 +258,15 @@ padding : 5px 15px;
 body{
     overflow-x: hidden;
 }
+
+.count_coin_order{
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    font-weight: bold;
+    border-radius: 0 0 5px 5px;
+    background-color: blue;
+    top: 0;
+    left: 50%;
+    color: white;
+}

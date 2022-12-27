@@ -213,6 +213,7 @@ app.get('/admin',(req, res)=>{
 
 io.on('connection', (socket) => {
     const roomUserModel = require('./model/roomUser');
+    const showCoinModel = require('./model/showcoin');
     // console.log('Số người hiện đang kết nối '+ socket.client.conn.server.clientsCount)
     // console.log('Người chơi '+ socket.id)
 
@@ -251,7 +252,57 @@ io.on('connection', (socket) => {
     })
 
 
+    //Nhận giá trị từ client
+    socket.on('xudat',(xudat)=>{
+        let name = xudat.name;
+        let countXu = xudat.count_xu;
 
+        var bien_nai =0;
+        var bien_bau =0;
+        var bien_ga =0;
+        var bien_ca =0;
+        var bien_cua =0;
+        var bien_tom =0;
+
+        showCoinModel.findOne().then((data)=>{
+            switch(name){
+                case 'nai':
+                    bien_nai = parseInt(data.nai) + parseInt(countXu)
+                    showCoinModel.findOneAndUpdate({id:'saveimg'},{nai: bien_nai},{new:true}).then((data))
+                    
+                    break;
+                case 'bau':
+                    bien_bau = parseInt(data.bau) + parseInt(countXu)
+                    showCoinModel.findOneAndUpdate({id:'saveimg'},{bau: bien_bau},{new:true}).then((data))
+                    break;
+                case 'ga':
+                    bien_ga = parseInt(data.ga)+ parseInt(countXu)
+                    showCoinModel.findOneAndUpdate({id:'saveimg'},{ga: bien_ga},{new:true}).then((data))
+                    break;
+                case 'ca':
+                    bien_ca = parseInt(data.ca)+ parseInt(countXu)
+                    showCoinModel.findOneAndUpdate({id:'saveimg'},{ca: bien_ca},{new:true}).then((data))
+                    break;
+                case 'cua':
+                    bien_cua = parseInt(data.cua) + parseInt(countXu)
+                    showCoinModel.findOneAndUpdate({id:'saveimg'},{cua: bien_cua},{new:true}).then((data))
+                    break;
+                case 'tom':
+                    bien_tom = parseInt(data.tom) + parseInt(countXu)
+                    showCoinModel.findOneAndUpdate({id:'saveimg'},{tom: bien_tom},{new:true}).then((data))
+                    break;
+            }
+            // showCoinModel.findOneAndUpdate({id:'saveimg'},{
+            //     nai:bien_nai,
+            //     bau:bien_bau,
+            //     ga:bien_ga,
+            //     ca:bien_ca,
+            //     cua:bien_tom,
+            //     tom:bien_cua
+            // },{new:true}).then((data)=>console.log(data))
+        })
+      
+    })
 
     //Hàm tạo element 
     //Khi có người mới vào phòng sẽ tạo ra các element hiển thị trên giao diện bàn chơi
@@ -260,7 +311,7 @@ io.on('connection', (socket) => {
             io.emit('createElementUser', data)
         })
     }
-  
+
 
     //Đếm số người chơi trong phòng
     function countNumberUser(){
