@@ -132,13 +132,14 @@ table tbody td{
 
 /* Hiệu chỉnh bàn cờ */
 #show_ban_co img{
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 #show_ban_co .col{
-    margin-top: 14px;
+    padding: 0;
+    margin: 0;
 }
 
 /* Css cho user trái, phải */

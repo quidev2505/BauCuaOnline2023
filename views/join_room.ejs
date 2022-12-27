@@ -6,7 +6,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;">
-    <div class="container d-flex flex-column justify-content-between" id="roomGame" style="height: 95vh;">
+    <div class="container d-flex flex-column justify-content-between" id="roomGame" style="height: 100%;">
       <% if(typeof userInfo !==undefined){%>
         <header class="row d-flex flex-column" style="flex-wrap: no-wrap">
           <!-- <button id="zoomIn">Phóng to</button>
@@ -393,14 +393,77 @@
       let randomdegree = Math.floor(Math.random() * 10);
       img.setAttribute('data-aos', "fade-up")
       img.setAttribute('class', dataindex)
-      img.style.width = '30px';
-      img.style.height = '30px';
+      img.style.width = '25px';
+      img.style.height = '25px';
       img.setAttribute('src', './img/coin.png')
       img.style.position = 'absolute';
-      img.style.transform = `rotate(${randomdegree}deg) translate(${randomPosition}px,-${randomPosition}px)`;
-      img.style.top = '45%'
+      img.style.transform = `rotate(${randomdegree}deg) translate(-${randomPosition}px,${randomPosition}px)`;
+      img.style.top = '50%'
       img.style.left = '50%'
       return img
+    }
+
+
+    //Hàm tạo hiệu ứng đồng xu socket room
+    function createCoinSocket(dataindex) {
+      let img = document.createElement('img')
+      let randomPosition = Math.floor(Math.random() * 10);
+      let randomdegree = Math.floor(Math.random() * 10);
+      // img.setAttribute('data-aos', "fade-up")
+      img.setAttribute('class-socket', dataindex)
+      img.style.width = '25px';
+      img.style.height = '25px';
+      img.setAttribute('src', './img/coin.png')
+      img.style.position = 'absolute';
+      img.style.transform = `rotate(${randomdegree}deg) translate(-${randomPosition}px,${randomPosition}px)`;
+      img.style.top = '50%'
+      img.style.left = '50%'
+      return img
+    }
+
+    socket.on('showXuDatRoomSocket', (data) => {
+      let value = data[0]
+
+      let nai = parseInt(value.nai)
+      let bau = parseInt(value.bau)
+      let ga = parseInt(value.ga)
+      let ca = parseInt(value.ca)
+      let cua = parseInt(value.cua)
+      let tom = parseInt(value.tom)
+
+      if (nai > 0) {
+        loopXu(nai, 'nai')
+      }
+      if (bau > 0) {
+        loopXu(bau, 'bau')
+      }
+      if (ga > 0) {
+        loopXu(ga, 'ga')
+      }
+      if (ca > 0) {
+        loopXu(ca, 'ca')
+      }
+      if (cua > 0) {
+        loopXu(cua, 'cua')
+      }
+      if (tom > 0) {
+        loopXu(tom, 'tom')
+      }
+
+    })
+
+    function loopXu(name_length, name_index) {
+      let parentE = document.querySelectorAll(`.count_coin_order`)
+
+
+      parentE.forEach((item, index) => {
+        if (item.dataset.index == name_index) {
+          for (let i = 0; i < name_length; i++) {
+            let newCoin = createCoinSocket(name_index);
+            item.parentElement.appendChild(newCoin);
+          }
+        }
+      })
     }
 
 
@@ -436,16 +499,35 @@
         //Xử lí hiển thị số xu đã đặt
         const countCoinOrder = document.querySelectorAll('.count_coin_order')
 
+
+
+
+
         if (number_coin_order == 0) {
           alert('Vui lòng chọn số lượng xu cần đặt trước !')
         } else {
           xuOrder += parseInt(number_coin_order)
+          let tongXu = parseInt(tongxu.innerText)
+          if (tongXu == 2 && parseInt(number_coin_order) > 2) {
+            alert('Bạn chỉ được đặt từ 2 xu trở xuống !');
+            return false;
+          } else if (tongXu == 4 && parseInt(number_coin_order) > 4) {
+            alert('Bạn chỉ được đặt từ 4 xu trở xuống !');
+            return false;
+          } else if (tongXu == 0 && parseInt(number_coin_order) > 0) {
+            alert('Bạn đã hết tiền đặt cược. Vui lòng mua thêm để chơi !');
+            return false;
+          } else {
+            tongxu.innerText = parseInt(tongxu.innerText) - parseInt(number_coin_order);
+          }
+
+
           if (xuOrder > 25) {
             alert('Chỉ được đặt tối đa 25 xu !')
             return false;
           }
 
-          tongxu.innerText = parseInt(tongxu.innerText) - parseInt(number_coin_order);
+
           for (let i = 0; i < number_coin_order; i++) {
             let newCoin = createCoin(dataIndex);
             e.target.parentElement.appendChild(newCoin);
@@ -458,7 +540,7 @@
               item.innerText = countXu.length
               let xudat = {
                 name: dataIndex,
-                count_xu: countXu.length
+                count_xu: number_coin_order
               }
               socket.emit('xudat', xudat)
             }
@@ -477,6 +559,10 @@
       countCoinOrder.forEach((item, index) => {
         item.innerHTML = ''
       })
+
+
+
+
       allcoin.forEach((item, index) => {
         tongxu.innerText = parseInt(tongxu.innerText) + parseInt(xutempOrder);
         xuOrder = 0;

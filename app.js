@@ -300,9 +300,19 @@ io.on('connection', (socket) => {
             //     cua:bien_tom,
             //     tom:bien_cua
             // },{new:true}).then((data)=>console.log(data))
+
+
         })
+        showXuDatRoomSocket();
       
     })
+
+
+    function showXuDatRoomSocket(){
+        showCoinModel.find().then((data)=>{
+            io.emit('showXuDatRoomSocket', data)
+        })
+    }
 
     //Hàm tạo element 
     //Khi có người mới vào phòng sẽ tạo ra các element hiển thị trên giao diện bàn chơi
@@ -324,7 +334,12 @@ io.on('connection', (socket) => {
     setInterval(()=>{
         createElementUser();
         countNumberUser();
+       
     },1100)
+
+    // setInterval(()=>{
+    //     showXuDatRoomSocket();
+    // },3500)
 
 
     //Khi bấm vào nút xem người chơi trong phòng
