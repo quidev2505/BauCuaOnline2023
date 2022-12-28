@@ -271,3 +271,183 @@ body{
     left: 50%;
     color: white;
 }
+
+
+#caito{
+    width: 100px;
+    height: 80px;
+    border-radius: 67px 68px 0 0;
+    background-color: orange;
+    margin: 0 auto;
+}
+
+#caidia{
+    width: 100px;
+    height: 10px;
+    border-radius: 10px;
+    background-color: white;
+    margin: 0 auto;
+}
+
+#xucxac{
+   position: relative;
+
+}
+
+@keyframes lacxucxac {
+    100%{
+        transform: translate(20px,-70px) rotate(25deg);
+    }
+}
+
+/* #xucxac img{
+    animation: anhchop infinite linear;
+}
+
+@keyframes anhchop {
+    0%{
+        border: 2px solid red;
+    }
+
+    100%{
+        border:2px solid blue;
+    }
+} */
+
+
+
+/* //Hình ảnh xí ngầu */
+/* /!\ You need to add vendor prefixes in order to render the CSS properly (or simply use http://leaverou.github.io/prefixfree/) /!\ */ #tridiv {
+    perspective: 707px;
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height: 100px;
+    background: transparent;
+    font-size: 20%;
+    top: -65px;
+    left: -34%;
+}
+
+#tridiv2 {
+    perspective: 707px;
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height: 100px;
+    background: transparent;
+    font-size: 20%;
+    top: -65px;
+    left: 0%;
+}
+
+#tridiv3 {
+    perspective: 707px;
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height: 100px;
+    background: transparent;
+    font-size: 20%;
+    top: -65px;
+    left: 36%;
+}
+.face {
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+.scene, .shape, .face, .face-wrapper, .cr {
+  position: absolute;
+  transform-style: preserve-3d;
+}
+.scene {
+  width: 80em;
+  height: 80em;
+  top: 50%;
+  left: 50%;
+  margin: -40em 0 0 -40em;
+}
+.shape {
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform-origin: 50%;
+}
+.face, .face-wrapper {
+  overflow: hidden;
+  transform-origin: 0 0;
+  backface-visibility: hidden;
+  /* hidden by default, prevent blinking and other weird rendering glitchs */
+}
+.face {
+  background-size: 100% 100%!important;
+  background-position: center;
+}
+.face-wrapper .face {
+  left: 100%;
+  width: 100%;
+  height: 100%
+}
+.photon-shader {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%
+}
+.side {
+  left: 50%;
+}
+.cr, .cr .side {
+  height: 100%;
+}
+[class*="cuboid"] .ft, [class*="cuboid"] .bk {
+  width: 100%;
+  height: 100%;
+}
+[class*="cuboid"] .bk {
+  left: 100%;
+}
+[class*="cuboid"] .rt {
+  transform: rotateY(-90deg) translateX(-50%);
+}
+[class*="cuboid"] .lt {
+  transform: rotateY(90deg) translateX(-50%);
+}
+[class*="cuboid"] .tp {
+  transform: rotateX(90deg) translateY(-50%);
+}
+[class*="cuboid"] .bm {
+  transform: rotateX(-90deg) translateY(-50%);
+}
+[class*="cuboid"] .lt {
+  left: 100%;
+}
+[class*="cuboid"] .bm {
+  top: 100%;
+}
+/* .cub-1 styles */
+.cub-1 {
+  transform:translate3D(2em, -5.8921568627450975em, 6.012254901960785em) rotateX(-180deg) rotateY(180deg) rotateZ(0deg);
+  opacity:1;
+  width:12em;
+  height:12em;
+  margin:-6em 0 0 -6em;
+}
+.cub-1 .ft {
+  transform:translateZ(6em);
+}
+.cub-1 .bk {
+  transform:translateZ(-6em) rotateY(180deg);
+}
+.cub-1 .rt, .cub-1 .lt {
+  width:12em;
+  height:12em;
+}
+.cub-1 .tp, .cub-1 .bm {
+  width:12em;
+  height:12em;
+}
+.cub-1 .face {
+  background-color:#FFFFFF;
+}

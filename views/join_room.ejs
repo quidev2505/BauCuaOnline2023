@@ -73,9 +73,17 @@
           </div>
 
           <!-- Hiển thị bàn cờ -->
-          <div id="show_ban_co" style="display: flex;align-items: center;margin:2px">
+          <div id="show_ban_co" style="display: flex;align-items: center;margin:2px" class="d-flex flex-column">
+            <div class="container text-white text-center mb-5" id="xucxac">
+              <div id="caito">
+
+              </div>
+              <div id="caidia">
+
+              </div>
+            </div>
             <div class="container">
-              <div class="row row-cols-3" style="    margin-top: 106px;border:2px solid orange;border-radius: 5px;    background-color: #7d0301;
+              <div class="row row-cols-3" style="border:2px solid orange;border-radius: 5px;    background-color: #7d0301;
        ">
                 <div class="col">
                   <div class="count_coin_order" data-index="nai">
@@ -370,15 +378,196 @@
 
     var statusGame = document.querySelector('#statusGame')
     var array_status_game = ['Chờ Admin bắt đầu ván !', 'Lắc xúc xắc',
-      'Đặt cược đi !', 'Hết giờ đặt cược', 'Khui nha', 'Trao thưởng', 'Ván mới bắt đầu sau 3 giây...'];
+      'Đặt cược đeeee !', 'Hết giờ nhe', 'Khui', 'Lụm tiền', 'Chuẩn bị qua ván mới'];
 
+    //Chờ Admin bắt đầu ván
     statusGame.innerText = array_status_game[0]
+
+
 
     //Khi admin nhấn bắt đầu game
     socket.on('action1FromAdmin', () => {
       //5 giai đoạn
+      //1.Lắc xúc xắc
       statusGame.innerText = array_status_game[1]
+      hd1();
+
+      //2. Đặt cược đi !
+      hd2()
+
+
+      //3. Khui nha
+      hd3()
+
+      socket.on('bobasomaiman', (bobaso) => {
+        let xucxac = document.querySelector('#xucxac');
+
+        let hinh1 = showxucxac(bobaso.so1)
+        let hinh2 = showxucxac(bobaso.so2)
+        let hinh3 = showxucxac(bobaso.so3)
+
+
+        xucxac.innerHTML = `
+              <div id="tridiv" data-aos="flip-left"
+     data-aos-easing="ease-out-cubic"
+     data-aos-duration="2000">
+        <div class="scene" style="-webkit-transform:rotateX(-56deg) rotateY(-41deg); -moz-transform:rotateX(-56deg) rotateY(-41deg); -ms-transform:rotateX(-56deg) rotateY(-41deg); transform:rotateX(-56deg) rotateY(-41deg); ">
+          <div class="shape cuboid-1 cub-1">
+            <div class="face ft">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+            <div class="face bk">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+            <div class="face rt">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+            <div class="face lt">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+            <div class="face bm">
+              <div class="photon-shader" style="background-image:url('./img/${hinh1}') ;    
+              background-repeat: no-repeat;
+              background-size: cover;
+              background-position: center;
+              transform: rotate(165deg"></div>
+            </div>
+            <div class="face tp">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="tridiv2" data-aos="flip-left"
+     data-aos-easing="ease-out-cubic"
+     data-aos-duration="2000">
+        <div class="scene" style="-webkit-transform:rotateX(-56deg) rotateY(-41deg); -moz-transform:rotateX(-56deg) rotateY(-41deg); -ms-transform:rotateX(-56deg) rotateY(-41deg); transform:rotateX(-56deg) rotateY(-41deg); ">
+          <div class="shape cuboid-1 cub-1">
+            <div class="face ft">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+            <div class="face bk">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+            <div class="face rt">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+            <div class="face lt">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+            <div class="face bm">
+              <div class="photon-shader" style="background-image:url('./img/${hinh2}') ;    
+              background-repeat: no-repeat;
+              background-size: cover;
+              background-position: center;
+              transform: rotate(165deg"></div>
+            </div>
+            <div class="face tp">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div id="tridiv3" data-aos="flip-left"
+     data-aos-easing="ease-out-cubic"
+     data-aos-duration="2000"">
+        <div class="scene" style="-webkit-transform:rotateX(-56deg) rotateY(-41deg); -moz-transform:rotateX(-56deg) rotateY(-41deg); -ms-transform:rotateX(-56deg) rotateY(-41deg); transform:rotateX(-56deg) rotateY(-41deg); ">
+          <div class="shape cuboid-1 cub-1">
+            <div class="face ft">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+            <div class="face bk">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+            <div class="face rt">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+            <div class="face lt">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+            <div class="face bm">
+              <div class="photon-shader" style="background-image:url('./img/${hinh3}') ;    
+              background-repeat: no-repeat;
+              background-size: cover;
+              background-position: center;
+              transform: rotate(165deg"></div>
+            </div>
+            <div class="face tp">
+              <div class="photon-shader" style="background-color: rgba(0, 0, 0, 0.176);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+        `
+      })
     })
+
+
+    function showxucxac(baucuahinh) {
+      let chuoi = ''
+      if (baucuahinh == 'nai') {
+        chuoi = 'nai.png'
+      } else if (baucuahinh == 'bau') {
+        chuoi = 'bau.png'
+      } else if (baucuahinh == 'ga') {
+        chuoi = 'ga.png'
+      } else if (baucuahinh == 'ca') {
+        chuoi = 'ca.png'
+      } else if (baucuahinh == 'cua') {
+        chuoi = 'cua.png'
+      } else if (baucuahinh == 'tom') {
+        chuoi = 'tom.png'
+      }
+
+      return chuoi;
+    }
+
+    //Mô tả hàm hành động
+    //Hành động 1.Lắc xúc sắc
+    function hd1() {
+      setTimeout(() => {
+        document.querySelector('#xucxac').setAttribute('style', 'animation : lacxucxac 0.5s 5 linear backwards;');
+      }, 1500)
+    }
+
+    //Hành động 2.Hành động đặt cược đi
+    function hd2() {
+      setTimeout(() => {
+        statusGame.innerText = array_status_game[2]
+        setTimeout(() => {
+          countDown();
+        }, 2000)
+      }, 5000)
+    }
+
+
+    //Hàm đếm ngược
+    function countDown() {
+      let countSum = 10
+      statusGame.innerText = 'Bắt đầu'
+      let countDown = setInterval(() => {
+        statusGame.innerText = countSum + ' giây'
+        countSum--;
+      }, 1000)
+
+      setTimeout(() => {
+        clearInterval(countDown)
+        statusGame.innerText = array_status_game[3]
+      }, 11000)
+    }
+
+
+    //3.Hành động khui nha
+    function hd3() {
+      setTimeout(() => {
+        statusGame.innerText = array_status_game[4]
+        socket.emit('khuixucxac')
+      }, 20000)
+    }
 
     //Khi admin nhấn vào nút bắt đầu ván chơi mới
     socket.on('action2FromAdmin', () => {
@@ -500,27 +689,22 @@
         const countCoinOrder = document.querySelectorAll('.count_coin_order')
 
 
-
-
-
         if (number_coin_order == 0) {
           alert('Vui lòng chọn số lượng xu cần đặt trước !')
         } else {
           xuOrder += parseInt(number_coin_order)
           let tongXu = parseInt(tongxu.innerText)
-          if (tongXu == 2 && parseInt(number_coin_order) > 2) {
-            alert('Bạn chỉ được đặt từ 2 xu trở xuống !');
+
+          if (tongXu == 0) {
+            alert('Hãy nạp thêm xu để có thể đặt cược !')
             return false;
-          } else if (tongXu == 4 && parseInt(number_coin_order) > 4) {
-            alert('Bạn chỉ được đặt từ 4 xu trở xuống !');
+          } else if (tongXu < parseInt(number_coin_order)) {
+            alert('Số xu hiện tại không đủ !')
             return false;
-          } else if (tongXu == 0 && parseInt(number_coin_order) > 0) {
-            alert('Bạn đã hết tiền đặt cược. Vui lòng mua thêm để chơi !');
-            return false;
-          } else {
+          }
+          else {
             tongxu.innerText = parseInt(tongxu.innerText) - parseInt(number_coin_order);
           }
-
 
           if (xuOrder > 25) {
             alert('Chỉ được đặt tối đa 25 xu !')
