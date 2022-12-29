@@ -209,6 +209,7 @@ app.get('/admin',(req, res)=>{
     }
 })
 
+var openRoom = 'true'
 
 
 io.on('connection', (socket) => {
@@ -217,25 +218,41 @@ io.on('connection', (socket) => {
     // console.log('Số người hiện đang kết nối '+ socket.client.conn.server.clientsCount)
     // console.log('Người chơi '+ socket.id)
 
-    // Khi phát hiện có người tham gia vào phòng chơi
-    socket.on('NewUserJoinRoom', (userNameJoinRoom)=>{
-        roomUserModel.count({}, function (err, count) {
-            console.log(count)
-          if (count > 8) {
-            socket.emit('waitingUserInRoom', 'fullUserInRoom')
-          } else {
-            roomUserModel.create({
-                nickname: userNameJoinRoom.nickname,
-                tongxu: userNameJoinRoom.tongxu,
-                anhdaidien: userNameJoinRoom.anhdaidien,
-                socketID :userNameJoinRoom.socketID
-            })
-            socket.broadcast.emit('notification_joinRoom', userNameJoinRoom.nickname)
-          }   
-        })
+
+    //Diễn tả 2 trạng thái của phòng mở và đóng phòng
+    socket.on('gamehavestart',(data)=>{
+        openRoom = 'false'
     })
 
 
+    socket.on('gamehaveend',(data)=>{
+        openRoom = 'true'
+    })
+
+    // Khi phát hiện có người tham gia vào phòng chơi
+    socket.on('NewUserJoinRoom', (userNameJoinRoom)=>{
+        if(openRoom == 'false'){
+            socket.emit('dabatdau')
+        }else{
+        roomUserModel.count({}, function (err, count) {
+            if (count > 8) {
+                socket.emit('waitingUserInRoom', 'fullUserInRoom')
+            } else {
+                roomUserModel.create({
+                    nickname: userNameJoinRoom.nickname,
+                    tongxu: userNameJoinRoom.tongxu,
+                    anhdaidien: userNameJoinRoom.anhdaidien,
+                    socketID :userNameJoinRoom.socketID
+                })
+                socket.broadcast.emit('notification_joinRoom', userNameJoinRoom.nickname)
+            }   
+            })
+        }
+    })
+
+
+
+   
         //Quản lí chơi bầu cua
     // Tổng cộng Admin sẽ có 3 hành động
     // 1.Admin nhấn bắt đầu -> Sẽ lắc xúc xắc -> Cho thời gian đặt cược (20 giây) -> Hết thời gian đặt cược -> Tự khui xúc xắc -> Phát thưởng
@@ -247,7 +264,17 @@ io.on('connection', (socket) => {
     })
 
     //Khi nhận được thông báo khui từ phía client sẽ tạo ra ngẫu nhiên các cặp số
-    socket.on('khuixucxac',()=>{
+    socket.on('khuixucxac',(data)=>{
+        
+        let arrayUser = []
+        let datcuocUser = []
+        data.forEach((item, index)=>{
+            if(parseInt(item.soluong) > 0){
+                arrayUser.push(item.ten)
+                datcuocUser.push(`${item.ten} - ${item.soluong}`)
+            }
+        })
+
         const randomNumberNew = Math.ceil(Math.random()*216)
         let danhtinh = arrayNumber[randomNumberNew];
     
@@ -257,227 +284,50 @@ io.on('connection', (socket) => {
             so3:danhtinhmoi(danhtinh[2])
         }
 
+        let arrayKQ = [bobaso.so1, bobaso.so2, bobaso.so3];
+
+        console.log('ket qua:', arrayKQ);
+        console.log('User:', arrayUser);
+        
+
+        let arrayKQFinal = []
+        for(let i=0; i< arrayKQ.length; i++){
+            let count = 0;
+            for(let j=0;j<arrayUser.length; j++){
+                if(arrayKQ[i] == arrayUser[j]){
+                    count++;
+                }
+            }
+            if(count > 0){
+                arrayKQFinal.push(`${arrayKQ[i]} - ${count}`)
+            }
+        }
+
+
+        console.log(arrayKQFinal)
+        console.log(datcuocUser)
+
+        let tongtienthuduoc = 0;
+        for(let i=0;i<arrayKQFinal.length;i++){
+            let tenkq = arrayKQFinal[i].split("-")[0];
+            let soluongkq = arrayKQFinal[i].split("-")[1];
+            for(let j= 0;j<datcuocUser.length;j++){
+                let tendatcuoc= datcuocUser[j].split("-")[0]
+                let xudatcuoc= datcuocUser[j].split("-")[1]
+
+                if(tenkq == tendatcuoc){
+                    tongtienthuduoc+=(parseInt(soluongkq * xudatcuoc)+parseInt(xudatcuoc))
+                }
+            }
+        }
+
+        
         io.emit('bobasomaiman', bobaso);
     })
 
 
     //Hàm khởi tạo cặp 3 số ngẫu nhiên
-    const arrayNumber = [[1, 4, 3],
-    [6, 3, 4],
-    [2, 6, 2],
-    [3, 4, 5],
-    [2, 6, 1],
-    [3, 4, 1],
-    [1, 1, 2],
-    [2, 5, 4],
-    [5, 1, 2],
-    [1, 3, 1],
-    [5, 4, 5],
-    [1, 4, 6],
-    [1, 6, 5],
-    [4, 3, 6],
-    [4, 2, 1],
-    [3, 2, 4],
-    [6, 5, 3],
-    [4, 3, 4],
-    [6, 4, 4],
-    [2, 3, 2],
-    [5, 4, 2],
-    [3, 3, 4],
-    [3, 4, 5],
-    [1, 6, 3],
-    [4, 5, 4],
-    [3, 6, 4],
-    [5, 2, 4],
-    [1, 4, 2],
-    [2, 1, 5],
-    [2, 6, 5],
-    [3, 4, 6],
-    [4, 4, 3],
-    [1, 6, 6],
-    [5, 4, 2],
-    [4, 4, 2],
-    [4, 1, 1],
-    [3, 1, 2],
-    [3, 5, 2],
-    [2, 2, 2],
-    [6, 1, 3],
-    [6, 5, 3],
-    [6, 1, 4],
-    [4, 4, 3],
-    [5, 3, 2],
-    [6, 2, 5],
-    [6, 1, 6],
-    [1, 4, 5],
-    [2, 6, 5],
-    [1, 3, 4],
-    [3, 4, 4],
-    [4, 3, 6],
-    [5, 2, 4],
-    [3, 1, 2],
-    [6, 3, 5],
-    [5, 5, 4],
-    [1, 3, 6],
-    [5, 2, 4],
-    [1, 3, 1],
-    [3, 5, 1],
-    [5, 3, 1],
-    [2, 4, 1],
-    [3, 3, 5],
-    [6, 1, 1],
-    [2, 6, 6],
-    [4, 5, 2],
-    [6, 2, 1],
-    [4, 5, 1],
-    [5, 2, 3],
-    [1, 2, 5],
-    [3, 1, 4],
-    [3, 4, 6],
-    [4, 5, 5],
-    [2, 4, 5],
-    [6, 5, 3],
-    [4, 3, 6],
-    [1, 6, 3],
-    [5, 1, 5],
-    [1, 1, 2],
-    [2, 3, 1],
-    [1, 6, 4],
-    [4, 2, 3],
-    [1, 3, 4],
-    [6, 6, 4],
-    [2, 4, 4],
-    [3, 4, 3],
-    [4, 5, 4],
-    [2, 5, 2],
-    [3, 1, 1],
-    [4, 1, 6],
-    [1, 6, 4],
-    [2, 6, 1],
-    [5, 5, 4],
-    [5, 5, 6],
-    [3, 3, 5],
-    [4, 3, 6],
-    [3, 1, 1],
-    [3, 2, 2],
-    [4, 5, 5],
-    [2, 3, 4],
-    [2, 6, 2],
-    [6, 1, 4],
-    [5, 2, 6],
-    [5, 5, 5],
-    [6, 4, 2],
-    [1, 2, 4],
-    [6, 3, 4],
-    [5, 3, 5],
-    [1, 5, 1],
-    [4, 5, 4],
-    [5, 2, 2],
-    [5, 6, 6],
-    [5, 2, 1],
-    [3, 6, 1],
-    [1, 5, 5],
-    [6, 2, 1],
-    [3, 4, 3],
-    [4, 4, 6],
-    [2, 5, 2],
-    [4, 2, 2],
-    [1, 1, 2],
-    [2, 3, 4],
-    [3, 3, 5],
-    [3, 2, 1],
-    [5, 5, 5],
-    [3, 2, 5],
-    [1, 4, 4],
-    [4, 4, 1],
-    [2, 5, 4],
-    [6, 4, 3],
-    [1, 4, 3],
-    [6, 1, 5],
-    [3, 5, 3],
-    [3, 6, 2],
-    [5, 5, 3],
-    [1, 1, 1],
-    [6, 1, 1],
-    [3, 5, 5],
-    [1, 5, 1],
-    [5, 6, 3],
-    [1, 4, 6],
-    [2, 1, 3],
-    [5, 3, 5],
-    [6, 5, 5],
-    [5, 3, 5],
-    [6, 6, 2],
-    [4, 6, 3],
-    [6, 4, 6],
-    [6, 1, 5],
-    [3, 1, 3],
-    [4, 5, 2],
-    [4, 1, 3],
-    [1, 4, 2],
-    [6, 3, 4],
-    [4, 6, 1],
-    [6, 1, 4],
-    [6, 6, 4],
-    [6, 5, 3],
-    [5, 5, 3],
-    [5, 6, 6],
-    [6, 2, 1],
-    [6, 6, 4],
-    [1, 5, 2],
-    [4, 6, 4],
-    [3, 6, 5],
-    [3, 6, 4],
-    [5, 1, 3],
-    [6, 4, 2],
-    [5, 5, 2],
-    [3, 4, 4],
-    [1, 5, 2],
-    [4, 3, 1],
-    [6, 3, 4],
-    [1, 3, 5],
-    [1, 4, 6],
-    [6, 4, 6],
-    [2, 3, 4],
-    [6, 5, 6],
-    [4, 4, 5],
-    [6, 1, 1],
-    [4, 1, 2],
-    [4, 2, 2],
-    [2, 3, 4],
-    [4, 1, 2],
-    [3, 4, 4],
-    [5, 3, 6],
-    [3, 4, 2],
-    [3, 3, 2],
-    [6, 1, 1],
-    [6, 4, 5],
-    [1, 2, 4],
-    [1, 5, 2],
-    [1, 2, 1],
-    [5, 2, 5],
-    [3, 3, 2],
-    [5, 2, 3],
-    [5, 2, 2],
-    [6, 1, 1],
-    [4, 1, 5],
-    [3, 5, 2],
-    [5, 1, 3],
-    [3, 1, 5],
-    [1, 5, 1],
-    [5, 1, 2],
-    [3, 1, 2],
-    [6, 2, 5],
-    [4, 2, 4],
-    [1, 4, 2],
-    [3, 2, 3],
-    [2, 3, 4],
-    [2, 3, 1],
-    [5, 2, 6],
-    [4, 6, 2],
-    [6, 1, 2],
-    [6, 6, 5],
-    [5, 3, 4],
-    [6, 4, 6]]
+    const arrayNumber = [[1,4,3],[6,3,4],[2,6,2],[3,4,5],[2,6,1],[3,4,1],[1,1,2],[2,5,4],[5,1,2],[1,3,1],[5,4,5],[1,4,6],[1,6,5],[4,3,6],[4,2,1],[3,2,4],[6,5,3],[4,3,4],[6,4,4],[2,3,2],[5,4,2],[3,3,4],[3,4,5],[1,6,3],[4,5,4],[3,6,4],[5,2,4],[1,4,2],[2,1,5],[2,6,5],[3,4,6],[4,4,3],[1,6,6],[5,4,2],[4,4,2],[4,1,1],[3,1,2],[3,5,2],[2,2,2],[6,1,3],[6,5,3],[6,1,4],[4,4,3],[5,3,2],[6,2,5],[6,1,6],[1,4,5],[2,6,5],[1,3,4],[3,4,4],[4,3,6],[5,2,4],[3,1,2],[6,3,5],[5,5,4],[1,3,6],[5,2,4],[1,3,1],[3,5,1],[5,3,1],[2,4,1],[3,3,5],[6,1,1],[2,6,6],[4,5,2],[6,2,1],[4,5,1],[5,2,3],[1,2,5],[3,1,4],[3,4,6],[4,5,5],[2,4,5],[6,5,3],[4,3,6],[1,6,3],[5,1,5],[1,1,2],[2,3,1],[1,6,4],[4,2,3],[1,3,4],[6,6,4],[2,4,4],[3,4,3],[4,5,4],[2,5,2],[3,1,1],[4,1,6],[1,6,4],[2,6,1],[5,5,4],[5,5,6],[3,3,5],[4,3,6],[3,1,1],[3,2,2],[4,5,5],[2,3,4],[2,6,2],[6,1,4],[5,2,6],[5,5,5],[6,4,2],[1,2,4],[6,3,4],[5,3,5],[1,5,1],[4,5,4],[5,2,2],[5,6,6],[5,2,1],[3,6,1],[1,5,5],[6,2,1],[3,4,3],[4,4,6],[2,5,2],[4,2,2],[1,1,2],[2,3,4],[3,3,5],[3,2,1],[5,5,5],[3,2,5],[1,4,4],[4,4,1],[2,5,4],[6,4,3],[1,4,3],[6,1,5],[3,5,3],[3,6,2],[5,5,3],[1,1,1],[6,1,1],[3,5,5],[1,5,1],[5,6,3],[1,4,6],[2,1,3],[5,3,5],[6,5,5],[5,3,5],[6,6,2],[4,6,3],[6,4,6],[6,1,5],[3,1,3],[4,5,2],[4,1,3],[1,4,2],[6,3,4],[4,6,1],[6,1,4],[6,6,4],[6,5,3],[5,5,3],[5,6,6],[6,2,1],[6,6,4],[1,5,2],[4,6,4],[3,6,5],[3,6,4],[5,1,3],[6,4,2],[5,5,2],[3,4,4],[1,5,2],[4,3,1],[6,3,4],[1,3,5],[1,4,6],[6,4,6],[2,3,4],[6,5,6],[4,4,5],[6,1,1],[4,1,2],[4,2,2],[2,3,4],[4,1,2],[3,4,4],[5,3,6],[3,4,2],[3,3,2],[6,1,1],[6,4,5],[1,2,4],[1,5,2],[1,2,1],[5,2,5],[3,3,2],[5,2,3],[5,2,2],[6,1,1],[4,1,5],[3,5,2],[5,1,3],[3,1,5],[1,5,1],[5,1,2],[3,1,2],[6,2,5],[4,2,4],[1,4,2],[3,2,3],[2,3,4],[2,3,1],[5,2,6],[4,6,2],[6,1,2],[6,6,5],[5,3,4],[6,4,6]]
 
 
     function danhtinhmoi(NumberA){

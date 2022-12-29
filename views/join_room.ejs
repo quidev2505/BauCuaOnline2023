@@ -383,10 +383,15 @@
     //Chờ Admin bắt đầu ván
     statusGame.innerText = array_status_game[0]
 
-
+    let btn_coinChoose = document.querySelectorAll('.coinChoose');
+    btn_coinChoose.forEach((item, index) => {
+      item.style.pointerEvents = 'none'
+      item.style.opacity = '0.5'
+    })
 
     //Khi admin nhấn bắt đầu game
     socket.on('action1FromAdmin', () => {
+      socket.emit('gamehavestart', 'dabatdau')
       //5 giai đoạn
       //1.Lắc xúc xắc
       statusGame.innerText = array_status_game[1]
@@ -394,7 +399,6 @@
 
       //2. Đặt cược đi !
       hd2()
-
 
       //3. Khui nha
       hd3()
@@ -504,6 +508,9 @@
       </div>
         `
       })
+
+      //4. Hành động nhận thưởng
+      // hd4();
     })
 
 
@@ -549,6 +556,12 @@
     function countDown() {
       let countSum = 10
       statusGame.innerText = 'Bắt đầu'
+      let btn_coinChoose = document.querySelectorAll('.coinChoose');
+      btn_coinChoose.forEach((item, index) => {
+        item.style.pointerEvents = ''
+        item.style.opacity = '1'
+      })
+
       let countDown = setInterval(() => {
         statusGame.innerText = countSum + ' giây'
         countSum--;
@@ -565,13 +578,36 @@
     function hd3() {
       setTimeout(() => {
         statusGame.innerText = array_status_game[4]
-        socket.emit('khuixucxac')
+        let arrayBauCua = []
+        let countcoinorder = document.querySelectorAll('.count_coin_order')
+        countcoinorder.forEach((item, index) => {
+          let tenbaucua = item.dataset.index;
+          let soluong = item.innerText;
+          let orderFromUser = {
+            ten: tenbaucua,
+            soluong: soluong
+          }
+          arrayBauCua.push(orderFromUser)
+        })
+
+
+        socket.emit('khuixucxac', arrayBauCua)
       }, 20000)
+    }
+
+
+    //4.Hành động nhận thưởng
+    function hd4() {
+      setTimeout(() => {
+        statusGame.innerText = array_status_game[5]
+
+      }, 2000)
     }
 
     //Khi admin nhấn vào nút bắt đầu ván chơi mới
     socket.on('action2FromAdmin', () => {
       statusGame.innerText = array_status_game[6]
+      socket.emit('gamehaveend', 'daketthuc')
     })
 
 
@@ -885,7 +921,10 @@
       window.location.href = 'mainScreen'
     })
 
-
+    socket.on('dabatdau', (data) => {
+      alert('Đã bắt đầu trò chơi. Vui lòng quay lại sau !')
+      window.location.href = 'mainScreen'
+    })
 
   </script>
   </body>

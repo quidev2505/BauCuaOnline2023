@@ -120,7 +120,7 @@
                             <!-- Quản lí hành động game -->
                             <div id="action_game" class="d-flex align-items-start flex-column border border-primary" style="padding: 5px;border-radius: 5px;">
                                 <div id="startGame">
-                                    <button type="button" class="btn btn-info" id="startGame">1. Bắt đầu</button>
+                                    <button type="button" class="btn btn-danger text-white" id="startGame">1. Bắt đầu</button>
                                 </div>
                                 <br>
                                 <div id="restart">
@@ -174,15 +174,20 @@
             let startGame = document.querySelector('#startGame');
             let restart = document.querySelector('#restart');
 
+            document.querySelector('#restart > button').setAttribute("disabled", "");
+
             //Nhấn nút bắt đầu
             startGame.addEventListener('click', () => {
                 socket.emit('action1');
+                document.querySelector('#startGame > button').setAttribute("disabled", "");
+                document.querySelector('#restart > button').removeAttribute('disabled');
             })
-
 
             //Nhấn nút bắt đầu lại trò chơi
             restart.addEventListener('click', () => {
                 socket.emit('action2');
+                document.querySelector('#startGame > button').removeAttribute('disabled');
+                document.querySelector('#restart > button').setAttribute("disabled", "");
             })
 
 
