@@ -254,7 +254,7 @@
                   border-radius: 10px;
                   object-fit: cover;
                   border: 3px solid #3396c5" src="/uploads/<%= userInfo.anhdaidien%>" alt="" width="50px" height="50px" id="anhdaidien">
-                  <button id="restart_order" type="button" class="btn btn-danger mt-2 mb-2" style="font-size: 13px;">Đặt lại</button>
+                  <button id="restart_order" type="button" class="btn btn-danger mt-2 mb-2" style="font-size: 13px;display: none;">Đặt lại</button>
 
 
                 </div>
@@ -288,7 +288,11 @@
                   height: 30px;
               " src="img/coin.png" alt="">
                   </div>
+                  <div class="row">
+                    <div id="xuthem">
 
+                    </div>
+                  </div>
 
                 </div>
               </div>
@@ -509,8 +513,11 @@
         `
       })
 
-      //4. Hành động nhận thưởng
-      // hd4();
+      // 4. Hành động nhận thưởng
+      hd4();
+
+      //5.Hành động chuẩn bị qua ván mới
+      hd5();
     })
 
 
@@ -537,6 +544,11 @@
     //Hành động 1.Lắc xúc sắc
     function hd1() {
       setTimeout(() => {
+        let btn_coinChoose = document.querySelectorAll('.coinChoose');
+        btn_coinChoose.forEach((item, index) => {
+          item.style.pointerEvents = 'none'
+          item.style.opacity = '0.5'
+        })
         document.querySelector('#xucxac').setAttribute('style', 'animation : lacxucxac 0.5s 5 linear backwards;');
       }, 1500)
     }
@@ -544,7 +556,13 @@
     //Hành động 2.Hành động đặt cược đi
     function hd2() {
       setTimeout(() => {
+        let btn_coinChoose = document.querySelectorAll('.coinChoose');
+        btn_coinChoose.forEach((item, index) => {
+          item.style.pointerEvents = 'none'
+          item.style.opacity = '0.5'
+        })
         statusGame.innerText = array_status_game[2]
+        document.querySelector('#restart_order').style.display = 'block';
         setTimeout(() => {
           countDown();
         }, 2000)
@@ -577,6 +595,12 @@
     //3.Hành động khui nha
     function hd3() {
       setTimeout(() => {
+        let btn_coinChoose = document.querySelectorAll('.coinChoose');
+        btn_coinChoose.forEach((item, index) => {
+          item.style.pointerEvents = 'none'
+          item.style.opacity = '0.5'
+        })
+        document.querySelector('#restart_order').style.display = 'none';
         statusGame.innerText = array_status_game[4]
         let arrayBauCua = []
         let countcoinorder = document.querySelectorAll('.count_coin_order')
@@ -590,8 +614,14 @@
           arrayBauCua.push(orderFromUser)
         })
 
+        let nickname = document.querySelector('#nickname_user')
 
-        socket.emit('khuixucxac', arrayBauCua)
+        let dataSendFromClient = {
+          mangbaucua: arrayBauCua,
+          nicknameUser: nickname.innerText
+        }
+
+        socket.emit('khuixucxac', dataSendFromClient)
       }, 20000)
     }
 
@@ -599,15 +629,75 @@
     //4.Hành động nhận thưởng
     function hd4() {
       setTimeout(() => {
+        let btn_coinChoose = document.querySelectorAll('.coinChoose');
+        btn_coinChoose.forEach((item, index) => {
+          item.style.pointerEvents = 'none'
+          item.style.opacity = '0.5'
+        })
         statusGame.innerText = array_status_game[5]
+      }, 25000)
+    }
 
-      }, 2000)
+
+    //Lãnh tiền
+    socket.on('tienxuthuduoc', (tongtienxu) => {
+      console.log(tongtienxu)
+      let xuthem = document.querySelector('#xuthem')
+      xuthem.innerHTML = `<span style="font-size: 20px;
+                          color: yellow;
+                          font-weight: bold;
+                          margin-left: 15px;">+ ${tongtienxu}</span>   
+                          <img style="
+                          width: 30px;
+                          height: 30px;
+                      " src="img/coin.png" alt="">`
+
+      let tongxu = document.querySelector('#tongxu')
+      tongxu.innerText = parseInt(tongxu.innerText) + parseInt(tongtienxu)
+      let guidi = {
+        nickname: document.querySelector('#nickname_user').innerText,
+        tongxu: tongxu.innerText
+      }
+      socket.emit('capnhattienmoi', guidi);
+    })
+
+    //5.Hành động qua ván mới
+    function hd5() {
+      setTimeout(() => {
+        let btn_coinChoose = document.querySelectorAll('.coinChoose');
+        btn_coinChoose.forEach((item, index) => {
+          item.style.pointerEvents = 'none'
+          item.style.opacity = '0.5'
+        })
+        statusGame.innerText = array_status_game[6]
+        document.querySelector('#xuthem').innerHTML = '';
+        let demtong = document.querySelectorAll('.count_coin_order')
+
+        demtong.forEach((item, index) => {
+          item.innerHTML = ''
+        })
+
+        let showxu = document.querySelectorAll('.cell_chess ~ img')
+        showxu.forEach((item, index) => {
+          item.remove()
+        })
+      }, 30000)
     }
 
     //Khi admin nhấn vào nút bắt đầu ván chơi mới
     socket.on('action2FromAdmin', () => {
-      statusGame.innerText = array_status_game[6]
-      socket.emit('gamehaveend', 'daketthuc')
+      statusGame.innerText = array_status_game[0]
+      xuOrder = 0;
+      let xucxac = document.querySelector('#xucxac');
+      xucxac.innerHTML = `
+                        <div id="caito">
+
+                        </div>
+                        <div id="caidia">
+
+                        </div>`
+
+      xucxac.setAttribute('style', '')
     })
 
 
