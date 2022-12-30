@@ -166,6 +166,12 @@ app.post('/register',upload.single('formFile'),urlencodedParser, (req, res)=>{
         .catch(()=>{res.redirect('/404_page')})
 })
 
+
+//Loading Page
+app.get('/firstScreen',(req, res)=>{
+    res.render('firstScreen')
+})
+
 //Trang chủ
 app.get('/', (req, res)=>{
     res.render('home')
@@ -394,8 +400,8 @@ io.on('connection', (socket) => {
 
         //Xử lí lỗi người chơi trong phòng (reset)
         const roomuser = require('./model/roomUser');
-        roomuser.findOneAndRemove({}).then()
-
+        // roomuser.findOneAndRemove({}).then()
+        roomuser.deleteMany()
 
     })
 
