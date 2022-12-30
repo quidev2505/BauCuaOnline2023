@@ -43,6 +43,24 @@
                                 </tbody>
                             </table>
 
+                            <br>
+                            <br>
+
+                            <h6 class="text-start">Bảng quản lí giao dịch rút tiền</h6>
+
+                            <table width="100%">
+                                <thead>
+                                    <th>Tên người chơi</th>
+                                    <th>Số tiền rút</th>
+                                    <th>Hành động</th>
+                                </thead>
+                                <tbody id="table_ruttien">
+                                    <tr id="default_tr_ruttien">
+                                        <td colspan="3">Hiện tại không có giao dịch</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
 
 
                             <div class="row mt-5">
@@ -127,6 +145,12 @@
                                     <button type="button" class="btn btn-success" id="restart">2. Bắt đầu lại màn chơi</button>
                                 </div>
                             </div>
+
+                            <br>
+                            <br>
+                            <br>
+                            <p>Nút sửa tất cả lỗi hiện có :</p>
+                            <button type="button" class="btn btn-info text-white" id="fixed">Sửa lỗi</button>
                         </div>
                     </div>
                 </div>
@@ -153,8 +177,10 @@
             var socket = io();
             let btn_accept = document.querySelector('#accept')
             let tbody = document.querySelector('#table_req')
+
             var data_user = '';
             var default_tr = document.querySelector('#default_tr')
+
             let notification_icon = document.querySelector('#notification')
 
 
@@ -249,6 +275,62 @@
                 })
             })
 
+
+            //Hành động rút tiền
+            var tbody_ruttien = document.querySelector('#table_ruttien')
+            var default_tr_ruttien = document.querySelector('#default_tr_ruttien')
+            socket.on('userruttien', (data) => {
+                sound.play()
+                notification_icon.style.display = 'block'
+                default_tr_ruttien.style.display = 'none'
+                let tr = document.createElement('tr');
+                let td1 = document.createElement('td');
+                let td2 = document.createElement('td');
+                let td3 = document.createElement('td');
+
+                td1.innerText = data.nickname
+                td2.innerText = data.sotienrut
+                td3.innerHTML = "<i class='bx bx-check-circle bx-tada yes' style='color:#1be02a' data-id='" + data.socket_user + "'></i> &nbsp&nbsp&nbsp&nbsp<i class='bx bxs-x-square bx-flip-vertical bx-tada no' style='color:#e03b06'  ></i>";
+
+                tr.appendChild(td1)
+                tr.appendChild(td2)
+                tr.appendChild(td3)
+
+                tbody_ruttien.append(tr)
+                data_user = data;
+
+                let btn_yes = document.querySelectorAll('.yes')
+                let btn_no = document.querySelectorAll('.no')
+
+                btn_yes.forEach((item, index) => {
+                    item.addEventListener('click', (e) => {
+                        e.target.parentElement.parentElement.remove();
+                        socket.emit('accept_ruttien', data_user)
+                        alert('Rút tiền thành công!')
+                        setTimeout(() => {
+                            location.reload();
+                            sound.pause()
+                        }, 500)
+                    })
+                })
+
+                btn_no.forEach((item, index) => {
+                    item.addEventListener('click', (e) => {
+                        e.target.parentElement.parentElement.remove();
+                        socket.emit('deny_ruttien', data_user)
+                        alert('Đã từ chối rút tiền!')
+                        notification_icon.style.display = 'none'
+                        sound.pause()
+                    })
+                })
+            })
+
+
+            let btnFix = document.querySelector('#fixed')
+
+            btnFix.addEventListener('click', () => {
+                socket.emit('fixed')
+            })
         </script>
 
         </body>

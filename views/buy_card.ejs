@@ -19,6 +19,10 @@
             <p>Số xu hiện có :</p>
             <p class="fw-bold">
                 <%= userInfo.tongxu %> xu
+                    <p id="sotienrut">
+                        <%= (userInfo.tongxu * 2000).toLocaleString('it-IT', {style : 'currency' , currency : 'VND' }) %>
+                    </p>
+                    <button type="button" class="btn btn-info text-white fw-bold" id="ruttien">Rút tiền</button>
             </p>
 
             <h2>Bảng mệnh giá nạp xu</h2>
@@ -165,6 +169,55 @@
             })
         })
 
+        let ruttien = document.querySelector('#ruttien')
+        ruttien.addEventListener('click', () => {
+            let nickname = document.querySelector('#nickname').value;
+            let tongxu = document.querySelector('#tongxu').value;
+            let sotienrut = document.querySelector('#sotienrut').innerText;
+
+            if (tongxu == 0) {
+                alert('Không còn tiền để rút !')
+            } else {
+                let user_ruttien = {
+                    money: money,
+                    nickname: nickname,
+                    tongxu: tongxu,
+                    sotienrut: sotienrut,
+                    socket_user: socket.id
+                }
+
+                socket.emit('userruttien', user_ruttien)
+                modal.click()
+            }
+
+        })
+
+        socket.on('accept_ruttien', (data) => {
+            $.notify("Rút tiền thành công", "success");
+            let modal = document.querySelector('.modal')
+            let modal_b = document.querySelectorAll('.modal-backdrop')
+            modal.style.display = 'none'
+            modal_b.forEach((item, index) => {
+                item.style.display = 'none'
+            })
+            setTimeout(() => {
+                window.location.href = 'mainScreen'
+            }, 1200)
+        })
+
+
+        socket.on('deny_ruttien', (data) => {
+            $.notify("Rút tiền thất bại !", "error");
+            let modal = document.querySelector('.modal')
+            let modal_b = document.querySelectorAll('.modal-backdrop')
+            modal.style.display = 'none'
+            modal_b.forEach((item, index) => {
+                item.style.display = 'none'
+            })
+            setTimeout(() => {
+                window.location.href = 'mainScreen'
+            }, 1200)
+        })
 
 
         socket.on('accept_buy_card', (data) => {

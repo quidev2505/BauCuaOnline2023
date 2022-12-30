@@ -334,7 +334,13 @@ io.on('connection', (socket) => {
 
     socket.on('capnhattienmoi',(guidi)=>{
         const userModel = require('./model/userModel');
+        const roomUserModel = require('./model/roomUser');
+
         userModel.findOneAndUpdate({nickname: guidi.nickname},{
+            tongxu: guidi.tongxu
+        },{new:true}).then(()=>{})
+
+        roomUserModel.findOneAndUpdate({nickname: guidi.nickname},{
             tongxu: guidi.tongxu
         },{new:true}).then(()=>{})
     })
@@ -380,6 +386,18 @@ io.on('connection', (socket) => {
         openRoom = 'true'
     })
 
+    //Nhận hành động sửa lỗi
+    socket.on('fixed',()=>{
+        //Xử lí lỗi nạp tiền
+        const handlebuycard = require('./model/handlebuycard');
+        handlebuycard.findOneAndRemove({}).then()
+
+        //Xử lí lỗi người chơi trong phòng (reset)
+        const roomuser = require('./model/roomUser');
+        roomuser.findOneAndRemove({}).then()
+
+
+    })
 
     //Nhận giá trị từ client
     socket.on('xudat',(xudat)=>{
@@ -514,6 +532,10 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('userOnline', data)
     })
 
+    socket.on('userruttien', (data)=>{
+        socket.broadcast.emit('userruttien', data)
+    })
+
     //Khi đã xác nhận nạp tiền từ phía admin
     socket.on('accept_buy_card', (data)=>{
         const userModel = require('./model/userModel');
@@ -541,6 +563,39 @@ io.on('connection', (socket) => {
         })
     })
 
+
+
+    //Xác nhận rút tiền từ Admin
+    socket.on('accept_ruttien', (data)=>{
+        const userModel = require('./model/userModel');
+        const nickname = data.nickname;
+        const sotienrut = data.sotienrut;
+        const tongxu_update = 0;
+
+        //Cập nhật lại tiền
+        userModel.findOneAndUpdate({nickname: nickname}, {tongxu: tongxu_update},{new: true})
+        .then(()=>{
+            socket.broadcast.emit("accept_ruttien", "xacnhan")
+        })
+
+        var date = new Date();
+        var current_date = date.getFullYear()+"-"+(date.getMonth()+1)+"-"+ date.getDate();
+        var current_time = date.getHours()+":"+date.getMinutes()+":"+ date.getSeconds();
+        var date_time = current_date+" "+current_time;	
+        
+        const buyCardModel = require('./model/ruttien');
+        buyCardModel.create({
+            tennguoichoi: nickname,
+            sotienrut: sotienrut,
+            thoigian: date_time
+        })
+    })
+
+
+    //Khi từ chốirút tiền từ admin
+    socket.on('deny_ruttien', (data)=>{
+        socket.broadcast.emit("deny_ruttien", "xacnhan")    
+    })
 
      //Khi từ chối nạp tiền từ admin
     socket.on('deny_buy_card', (data)=>{
