@@ -168,12 +168,12 @@ app.post('/register',upload.single('formFile'),urlencodedParser, (req, res)=>{
 
 
 //Loading Page
-app.get('/firstScreen',(req, res)=>{
+app.get('/',(req, res)=>{
     res.render('firstScreen')
 })
 
 //Trang chủ
-app.get('/', (req, res)=>{
+app.get('/home', (req, res)=>{
     res.render('home')
 })
 
@@ -211,7 +211,7 @@ app.get('/admin',(req, res)=>{
             res.render('admin' , {buyCardInfo : data})
         }).catch(()=>res.redirect('/404_page'))
     }else{
-        res.redirect('/')
+        res.redirect('/home')
     }
 })
 

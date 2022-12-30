@@ -31,6 +31,7 @@
         #anhnen {
             width: 100vw;
             height: 100vh;
+            position: relative;
         }
 
         #anhnen img {
@@ -38,13 +39,118 @@
             height: 100%;
             object-fit: fill;
         }
+
+        #btn_start {
+            position: absolute;
+            top: 77%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: red;
+            border-radius: 5px;
+            padding: 10px;
+            color: yellow;
+            font-weight: bold;
+            border: 0;
+        }
+
+        #myItem1 {
+            width: 367px !important;
+            height: 109px !important;
+            position: absolute;
+            top: 85%;
+            opacity: 0;
+            color: yellow;
+        }
+
+        html {
+            overflow: hidden;
+        }
+
+        .ldBar-label {
+            position: absolute;
+            top: 51%;
+            left: 39%;
+            font-size: 39px;
+            transform: translate(11px, -30px);
+            color: white;
+            font-weight: bold;
+        }
     </style>
+    <link rel="stylesheet" type="text/css" href="loading-bar.css" />
 </head>
 
-<body>
+<body id="loading">
     <div id="anhnen">
         <img src="./img/background_loading.png" alt="">
     </div>
+
+    <button id="btn_start">BẮT ĐẦU</button>
+    <div data-preset="stripe" class="ldBar label-center" data-value="0" id="myItem1"></div>
+
+    <!-- Hỗ trợ âm thanh cho game -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Loading Bar -->
+    <script type="text/javascript" src="/js/loading-bar.js"></script>
+    <script>
+        // Tiếng chuông reo khi có thông báo
+        var sound = new Howl({
+            src: ['/audio/nhacnenloading.mp3']
+        });
+
+        let progress = document.querySelector('#myItem1')
+
+        let btnStart = document.querySelector('#btn_start')
+
+
+
+        btnStart.addEventListener('click', () => {
+            sound.play()
+            btnStart.style.display = 'none'
+            progress.style.opacity = 1
+
+            /* construct manually */
+            var bar1 = new ldBar("#myItem1");
+            /* ldBar stored in the element */
+            var bar2 = document.getElementById('myItem1').ldBar;
+
+            let valueNumber = document.querySelector('.ldBar-label')
+            valueNumber.innerText = valueNumber.innerText + '%'
+
+            setTimeout(() => {
+                bar1.set(10)
+            }, 1000)
+
+            setTimeout(() => {
+                bar1.set(30)
+            }, 2300)
+
+            setTimeout(() => {
+                bar1.set(50)
+            }, 4000)
+
+            setTimeout(() => {
+                bar1.set(80)
+            }, 5600)
+
+            setTimeout(() => {
+                bar1.set(100)
+            }, 6300)
+
+            setTimeout(() => {
+                window.location.href = 'home'
+            }, 8000)
+
+
+        })
+
+
+
+
+
+
+    </script>
+
 </body>
 
 </html>
