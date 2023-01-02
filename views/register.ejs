@@ -1,35 +1,61 @@
 <%- include('./partials/header'); -%>
-    <a href="/" class="fs-3">    
-        <i class='bx bx-arrow-back'>Trở về</i>
-    </a>
-    <title>Đăng kí tài khoản</title>
-        <div class="container mt-5">   
-            <h1 class="text-center">ĐĂNG KÍ TÀI KHOẢN</h1>
-            <% if(typeof duplicated_username != 'undefined') {%>
-                <div class="alert alert-danger" role="alert">
-                    <%= duplicated_username %> 
-                </div>
-            <% } %> 
-            <form action="/register" method="post" class="container" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Tên đăng nhập</label>
-                    <input type="username" class="form-control" id="username" aria-describedby="emailHelp" minlength="3" name="username" required >
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Mật khẩu</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" name="password" minlength="6" required >
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Nick Name</label>
-                    <input type="text" class="form-control" id="exampleInputtext" name="nickname" required>
-                </div>
-                <div class="mb-3">
-                    <label for="formFile" class="form-label">Ảnh đại diện</label>
-                    <input class="form-control" type="file" id="formFile" name="formFile" required>
-                <div>
-                <br>
-                <button type="submit" class="btn btn-primary d-flex justify-content-center">Xác nhận</button>
-            </form>
-        </div>
 
-<%- include('./partials/footer'); -%>
+    <title>Đăng kí tài khoản</title>
+    <div class="container-fluid" style="  width: 100vw;
+    height: 100vh;
+    position: relative;padding:0">
+
+        <div class="row" style="height:100vh; ">
+
+            <img src="./img/register.png" alt="" style=" width: 100%;
+            height: 100%;
+            object-fit: fill;">
+            <div class="d-flex justify-content-center" style="    position: absolute;
+            top: 0%;
+            flex-direction: column;
+            transform: translateX(13px);
+            
+">
+                <a href="/home" class="fs-3 text-decoration-none" style="width:28%;">
+                    <button class=" button-29" role="button" style="width:100%;"> <i class='bx bx-arrow-back'></i>&nbsp;TRỞ VỀ</button>
+
+                </a>
+                <br>
+                <br>
+                <h1 class="text-center text-white">ĐĂNG KÝ TÀI KHOẢN</h1>
+                <br>
+                <% if(typeof duplicated_username !='undefined' ) {%>
+                    <div class="alert alert-danger" role="alert">
+                        <%= duplicated_username %>
+                    </div>
+                    <% } %>
+                        <form action="/register" method="post" class="container" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label  text-white">Tên đăng nhập</label>
+                                <input type="username" class="form-control" id="username" aria-describedby="emailHelp" minlength="3" name="username" required>
+                            </div>
+                            <br>
+                            <div class="mb-3">
+                                <label for="exampleInputPassword1" class="form-label  text-white">Mật khẩu</label>
+                                <input type="password" class="form-control" id="exampleInputPassword1" name="password" minlength="6" required>
+                            </div>
+                            <br>
+                            <div class="mb-3">
+                                <label for="exampleInputPassword1" class="form-label  text-white">Nick Name</label>
+                                <input type="text" class="form-control" id="exampleInputtext" name="nickname" required>
+                            </div>
+                            <br>
+                            <div class="mb-3">
+                                <label for="formFile" class="form-label  text-white">Ảnh đại diện</label>
+                                <input class="form-control" type="file" id="formFile" name="formFile" required>
+                                <div>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <button class="button-72" role="button" style="margin:0 auto; width:100%;">XÁC NHẬN</button>
+                        </form>
+            </div>
+        </div>
+    </div>
+
+    <%- include('./partials/footer'); -%>

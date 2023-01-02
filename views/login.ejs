@@ -1,28 +1,53 @@
 <%- include('./partials/header'); -%>
     <title>Đăng nhập</title>
-    <div class="container mt-5">
-        <h1 class="text-center">ĐĂNG NHẬP</h1>
-        <% if(typeof err_login !='undefined' ) {%>
-            <div class="alert alert-danger" role="alert">
-                <%= err_login %>
-            </div>
-            <% } %>
-                <form action="/login" method="post" class="container">
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Tên đăng nhập</label>
-                        <input type="username" class="form-control" id="username" aria-describedby="emailHelp" name="username" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Mật khẩu</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary d-flex justify-content-center">Xác nhận</button>
-                </form>
-                <a href="/" class="text-decoration-none">
-                    <button class="btn btn-danger d-flex justify-content-center mt-3">Trở về trang chủ</button>
+    <div class="container-fluid" style="  width: 100vw;
+    height: 100vh;
+    position: relative;padding:0">
+
+        <div class="row" style="height:100vh; ">
+
+            <img src="./img/loginForm.png" alt="" style=" width: 100%;
+            height: 100%;
+            object-fit: fill;">
+            <div class="d-flex justify-content-center" style="    position: absolute;
+            top: 0%;
+            flex-direction: column;
+            transform: translateX(13px);
+            
+">
+                <a href="/home" class="text-decoration-none">
+                    <button class="button-44" role="button" style="    width: 40%;
+                    margin-left: -14px;">TRỞ VỀ</button>
                 </a>
-                <p>Nếu chưa có tài khoản hãy ấn vào <a href="/register">đây</a> để đăng kí</p>
+                <br>
+                <h1 class="text-center" style="color: red;">ĐĂNG NHẬP</h1>
+                <br>
+                <% if(typeof err_login !='undefined' ) {%>
+                    <div class="alert alert-danger" role="alert">
+                        <%= err_login %>
+                    </div>
+                    <% } %>
+                        <form action="/login" method="post" class="container">
+                            <div class="mb-3">
+                                <label for="exampleInputEmail1" class="form-label fw-bold">Tên đăng nhập</label>
+                                <input type="username" class="form-control" id="username" aria-describedby="emailHelp" name="username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="exampleInputPassword1" class="form-label fw-bold">Mật khẩu</label>
+                                <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
+                            </div>
+                            <button class="button-66" role="button" style="margin:0 auto;">XÁC NHẬN</button>
+                        </form>
+
+                        <a href="/register" class="text-decoration-none" style="position: absolute;
+                        bottom: -68%;
+                        transform: translateX(105px);">
+                            <button class="button-78" role="button">ĐĂNG KÝ</button>
+                        </a>
+            </div>
+        </div>
     </div>
+
 
 
     <%- include('./partials/footer'); -%>
