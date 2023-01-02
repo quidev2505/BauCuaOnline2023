@@ -11,12 +11,23 @@
         <header class="row d-flex flex-column" style="flex-wrap: no-wrap">
           <!-- <button id="zoomIn">Phóng to</button>
                <button id="zoomOut">Thu nhỏ</button> -->
-          <a href="/mainScreen" class="fs-3" style="width:fit-content;margin-right:auto">
-            <img src="./img/left-arrow.png" alt="" style="    width: 35px;
-        height: 35px;
-        object-fit: contain;
-        object-position: center;">
-          </a>
+          <div class="row" style="flex-wrap:nowrap">
+            <a href="/mainScreen" class="fs-3" style="width:fit-content;margin-right:auto">
+              <img src="./img/left-arrow.png" alt="" style="    width: 35px;
+          height: 35px;
+          object-fit: contain;
+          object-position: center;">
+
+            </a>
+
+            <div id="chatRoom" style="text-align:right;margin-right:20px">
+              <img src="./img/chat.png" alt="" style="    width: 35px;
+              height: 35px;
+              object-fit: contain;
+              object-position: center;margin-right: 27px;">
+            </div>
+
+          </div>
 
 
           <div class="d-flex  align-items-center">
@@ -63,7 +74,6 @@
               border: 1px solid red;"></h2>
             </div>
           </div>
-
         </header>
 
 
@@ -79,10 +89,10 @@
           <!-- Hiển thị bàn cờ -->
           <div id="show_ban_co" style="display: flex;align-items: center;margin:2px" class="d-flex flex-column">
             <div class="container text-white text-center mb-5" id="xucxac">
-              <div id="caito">
+              <div id="caito" data-aos="fade-left" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1000">
 
               </div>
-              <div id="caidia">
+              <div id="caidia" data-aos="fade-up" data-aos-anchor-placement="center-bottom">
 
               </div>
             </div>
@@ -358,6 +368,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js" integrity="sha512-uE2UhqPZkcKyOjeXjPCmYsW9Sudy5Vbv0XwAVnKBamQeasAVAmH6HR9j5Qpy6Itk1cxk+ypFRPeAZwNnEwNuzQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+
+  <!-- Hỗ trợ âm thanh cho game -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
     // //Xử lí FullScreen
     // let zoomIn = document.querySelector('#zoomIn')
@@ -377,8 +391,78 @@
     // })
 
     var socket = io();
+    var soundhd0 = new Howl({
+      src: ['/audio/hd1.mp3']
+    });
+
+    var soundhd1 = new Howl({
+      src: ['/audio/hdlacxucxac.mp3']
+    });
 
 
+    var soundhd1_2 = new Howl({
+      src: ['/audio/hdxucxackeu_new.mp3']
+    });
+
+
+    var datcuocdi = new Howl({
+      src: ['/audio/datcuocdi.mp3']
+    });
+
+    var soundhd2 = new Howl({
+      src: ['/audio/hdxucxackeu.mp3']
+    });
+
+    var datcuoc = new Howl({
+      src: ['/audio/datcuoc.mp3']
+    });
+
+    var demnguoc = new Howl({
+      src: ['/audio/demnguoc.mp3']
+    });
+
+    var hetgio = new Howl({
+      src: ['/audio/hetgio.mp3']
+    });
+
+    var khui = new Howl({
+      src: ['/audio/khui.mp3']
+    });
+
+    var xuroi = new Howl({
+      src: ['/audio/xuroi.mp3']
+    });
+
+    var chucmung = new Howl({
+      src: ['/audio/chucmung.mp3']
+    });
+
+    var nai = new Howl({
+      src: ['/audio/nai.mp3']
+    });
+
+    var nai = new Howl({
+      src: ['/audio/nai.mp3']
+    });
+    var bau = new Howl({
+      src: ['/audio/bau.mp3']
+    });
+    var ga = new Howl({
+      src: ['/audio/ga.mp3']
+    });
+    var ca = new Howl({
+      src: ['/audio/ca.mp3']
+    });
+    var tom = new Howl({
+      src: ['/audio/tom.mp3']
+    });
+    var cua = new Howl({
+      src: ['/audio/cua.mp3']
+    });
+
+    var tiengdatxu = new Howl({
+      src: ['/audio/bonk.mp3']
+    });
     //Quản lí chơi bầu cua
     // Tổng cộng Admin sẽ có 3 hành động
     // 1.Admin nhấn bắt đầu -> Sẽ lắc xúc xắc -> Cho thời gian đặt cược (20 giây) -> Hết thời gian đặt cược -> Tự khui xúc xắc -> Phát thưởng
@@ -412,11 +496,19 @@
       hd3()
 
       socket.on('bobasomaiman', (bobaso) => {
+        setTimeout(() => {
+          chucmung.play()
+        }, 2000)
         let xucxac = document.querySelector('#xucxac');
 
+        //Tao am thanh tung xuc xac
+
         let hinh1 = showxucxac(bobaso.so1)
+
         let hinh2 = showxucxac(bobaso.so2)
+
         let hinh3 = showxucxac(bobaso.so3)
+
 
 
         xucxac.innerHTML = `
@@ -515,7 +607,21 @@
         </div>
       </div>
         `
+
+        setTimeout(() => {
+          taoamthanh(bobaso.so1)
+        }, 2600)
+
+        setTimeout(() => {
+          taoamthanh(bobaso.so2)
+        }, 3200)
+
+
+        setTimeout(() => {
+          taoamthanh(bobaso.so3)
+        }, 3800)
       })
+
 
       // 4. Hành động nhận thưởng
       hd4();
@@ -524,6 +630,28 @@
       hd5();
     })
 
+    function taoamthanh(amthanh) {
+      switch (amthanh) {
+        case 'nai':
+          nai.play();
+          break;
+        case 'bau':
+          bau.play();
+          break;
+        case 'ga':
+          ga.play();
+          break;
+        case 'ca':
+          ca.play();
+          break;
+        case 'tom':
+          tom.play();
+          break;
+        case 'cua':
+          cua.play();
+          break;
+      }
+    }
 
     function showxucxac(baucuahinh) {
       let chuoi = ''
@@ -547,19 +675,23 @@
     //Mô tả hàm hành động
     //Hành động 1.Lắc xúc sắc
     function hd1() {
+      soundhd1.play()
       setTimeout(() => {
         let btn_coinChoose = document.querySelectorAll('.coinChoose');
         btn_coinChoose.forEach((item, index) => {
           item.style.pointerEvents = 'none'
           item.style.opacity = '0.5'
         })
+        soundhd1_2.play()
         document.querySelector('#xucxac').setAttribute('style', 'animation : lacxucxac 0.5s 5 linear backwards;');
       }, 1500)
     }
 
     //Hành động 2.Hành động đặt cược đi
     function hd2() {
+      soundhd1_2.pause()
       setTimeout(() => {
+        datcuocdi.play()
         let btn_coinChoose = document.querySelectorAll('.coinChoose');
         btn_coinChoose.forEach((item, index) => {
           item.style.pointerEvents = 'none'
@@ -578,6 +710,7 @@
     function countDown() {
       let countSum = 10
       statusGame.innerText = 'Bắt đầu'
+      datcuoc.play()
       let btn_coinChoose = document.querySelectorAll('.coinChoose');
       btn_coinChoose.forEach((item, index) => {
         item.style.pointerEvents = ''
@@ -585,13 +718,16 @@
       })
 
       let countDown = setInterval(() => {
+        demnguoc.play()
         statusGame.innerText = countSum + ' giây'
         countSum--;
       }, 1000)
 
       setTimeout(() => {
+        demnguoc.pause()
         clearInterval(countDown)
         statusGame.innerText = array_status_game[3]
+        hetgio.play()
       }, 11000)
     }
 
@@ -599,6 +735,7 @@
     //3.Hành động khui nha
     function hd3() {
       setTimeout(() => {
+        khui.play()
         let btn_coinChoose = document.querySelectorAll('.coinChoose');
         btn_coinChoose.forEach((item, index) => {
           item.style.pointerEvents = 'none'
@@ -633,6 +770,7 @@
     //4.Hành động nhận thưởng
     function hd4() {
       setTimeout(() => {
+        xuroi.play()
         let btn_coinChoose = document.querySelectorAll('.coinChoose');
         btn_coinChoose.forEach((item, index) => {
           item.style.pointerEvents = 'none'
@@ -691,6 +829,7 @@
     //Khi admin nhấn vào nút bắt đầu ván chơi mới
     socket.on('action2FromAdmin', () => {
       statusGame.innerText = array_status_game[0]
+      soundhd0.play()
       xuOrder = 0;
       let xucxac = document.querySelector('#xucxac');
       xucxac.innerHTML = `
@@ -814,6 +953,7 @@
 
     getAllCell.forEach((item, index) => {
       item.addEventListener('click', (e) => {
+        tiengdatxu.play();
         let dataIndex = e.target.dataset.index;
         //Xử lí hiển thị số xu đã đặt
         const countCoinOrder = document.querySelectorAll('.count_coin_order')
@@ -990,6 +1130,7 @@
       const anhdaidien = document.querySelector('#anhdaidien')
       const socketID = socket.id;
 
+      soundhd0.play();
       let roomUser = {
         nickname: nickname.innerText,
         tongxu: tongxu.innerText,

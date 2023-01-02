@@ -1,7 +1,7 @@
 <%- include('./partials/header'); -%>
     <title>Màn hình chính</title>
     <div class="container text-center">
-        <h2>Tài khoản cá nhân</h2>
+        <h2 style="color:red;font-weight:bold;margin-top: 15px;">Tài khoản cá nhân</h2>
         <% if(typeof userInfo !='undefined' ) {%>
             <div class="alert alert-success" role="alert">
                 Xin chào, <span class="fw-bold">
@@ -12,24 +12,26 @@
                 <img src="/uploads/<%= userInfo.anhdaidien%>" alt="">
             </div>
             <br>
-            <h3>Tổng xu hiện tại: <p>
+            <h3>Tổng xu hiện tại: <p style="color:red;">
                     <%= userInfo.tongxu %> xu ( <%= (userInfo.tongxu * 2000).toLocaleString('it-IT', {style : 'currency' , currency : 'VND' }) %>)
                 </p>
             </h3>
 
             <% } else {window.location.href='/home.ejs' }%>
                 <br>
-                <br>
-                <a href="/buy_card" class="text-decoration-none">
-                    <button type="button" class="btn btn-primary">Nạp xu</button>
+
+                <a href="/buy_card" class="text-decoration-none" style="margin-right:10px">
+                    <button class="button-30" role="button">Nạp Xu</button>
                 </a>
                 <a href="/join_room" class="text-decoration-none">
-                    <button type="button" class="btn btn-success">Vào phòng chơi</button>
+                    <button class="button-29" role="button">Tham gia phòng</button>
                 </a>
                 <br>
                 <br>
                 <br>
-                <a href="/logout" class="text-decoration-none">Đăng Xuất</a>
+                <a href="/logout" class="text-decoration-none">
+                    <button class="button-51" role="button">Đăng Xuất</button>
+                </a>
     </div>
 
     <%- include('./partials/footer'); -%>

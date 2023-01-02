@@ -14,7 +14,7 @@
     border-radius: 50%;
     outline: none;
     overflow: hidden;
-    border: 2px solid blue;
+    border: 2px solid #87de85;
     /* box-shadow: 5px 3px 8px 1px black; */
     margin: 0 auto;
 }
@@ -274,12 +274,13 @@ body{
 
 
 #caito{
-    width: 100px;
-    height: 80px;
-    border-radius: 67px 68px 0 0;
-    background-color: orange;
-    margin: 0 auto;
+  width: 84px;
+  height: 80px;
+  border-radius: 27px 27px 0px 0px;
+  background-color: orange;
+  margin: 0px auto;
 }
+
 
 #caidia{
     width: 100px;

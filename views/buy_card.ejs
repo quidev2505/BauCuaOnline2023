@@ -1,7 +1,8 @@
 <%- include('./partials/header'); -%>
     <title>Nạp xu</title>
-    <a href="/mainScreen" class="fs-3">
-        <i class='bx bx-arrow-back'>Trở về</i>
+
+    <a href="/mainScreen" class="fs-3 text-decoration-none" style="width:28%;">
+        <button class=" button-29" role="button" style="width:28%;"> <i class='bx bx-arrow-back'></i>&nbsp;TRỞ VỀ</button>
     </a>
     <div>
         Thời gian nạp xu còn lại:
@@ -11,18 +12,16 @@
 
         <h2>Nạp xu vào game</h2>
         <% if(typeof userInfo !='undefined' ) {%>
-            <p>id User:</p>
-            <p class="fw-bold">
-                <%= userInfo._id.toString() %>
-            </p>
-
             <p>Số xu hiện có :</p>
-            <p class="fw-bold">
+            <p class="fw-bold" style="font-size:40px">
                 <%= userInfo.tongxu %> xu
-                    <p id="sotienrut">
+                    <p id="sotienrut" style="color: blue;">
+                        Quy ra tiền mặt:
                         <%= (userInfo.tongxu * 2000).toLocaleString('it-IT', {style : 'currency' , currency : 'VND' }) %>
                     </p>
-                    <button type="button" class="btn btn-info text-white fw-bold" id="ruttien">Rút tiền</button>
+                    <br>
+                    <button class="button-29" role="button">Rút Tiền</button>
+
             </p>
 
             <h2>Bảng mệnh giá nạp xu</h2>
@@ -122,13 +121,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js" integrity="sha512-uE2UhqPZkcKyOjeXjPCmYsW9Sudy5Vbv0XwAVnKBamQeasAVAmH6HR9j5Qpy6Itk1cxk+ypFRPeAZwNnEwNuzQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <!-- Hỗ trợ âm thanh cho game -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" integrity="sha512-6+YN/9o9BWrk6wSfGxQGpt3EUK6XeHi6yeHV+TYD2GR0Sj/cggRpXr1BrAQf0as6XslxomMUxXp2vIl+fv0QRA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script>
         var socket = io();
-
+        var sound = new Howl({
+            src: ['/audio/demnguoc.mp3']
+        });
 
         //Khi phát hiện có người nhấn vào phòng mua thẻ - chỉ xử lí 1 sự kiện/lần
         socket.on("connect", () => {
             socket.emit('userbuycard', socket.id);
+            sound.play()
         })
 
 
