@@ -257,7 +257,10 @@ io.on('connection', (socket) => {
     })
 
 
-
+    //Quan li tin nhan
+    socket.on('datasendFromClient',(data)=>{
+        io.emit('datasendFromAdmin',data)
+    })
    
         //Quản lí chơi bầu cua
     // Tổng cộng Admin sẽ có 3 hành động
@@ -400,7 +403,7 @@ io.on('connection', (socket) => {
 
         //Xử lí lỗi người chơi trong phòng (reset)
         const roomuser = require('./model/roomUser');
-        // roomuser.findOneAndRemove({}).then()
+        roomuser.findOneAndRemove({}).then()
         roomuser.deleteMany()
 
     })

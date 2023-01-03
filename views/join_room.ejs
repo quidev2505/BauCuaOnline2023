@@ -20,12 +20,12 @@
 
             </a>
 
-            <div id="chatRoom" style="text-align:right;margin-right:20px">
+            <!-- <div id="chatRoom" style="text-align:right;margin-right:20px">
               <img src="./img/chat.png" alt="" style="    width: 35px;
               height: 35px;
               object-fit: contain;
               object-position: center;margin-right: 27px;">
-            </div>
+            </div> -->
 
           </div>
 
@@ -254,7 +254,8 @@
           </div>
         </div>
 
-        <footer class="row container-fluid" style="    width: 300px;
+
+        <footer class="row container-fluid" style="    width: 300px;display: flex;flex-wrap:nowrap;
     margin: 0 auto;">
           <div class="card" style="border-radius: 10px;
         border: 1px solid #ccc;background-color: #252a4f ;padding: 3px 0px 0px 0px;">
@@ -353,12 +354,80 @@
 
             </div>
           </div>
+          <div id="chaticon" style="
+          width: 50px;
+          height: 50px;
+          margin-top: 25%;
+          margin-left: 3px;
+          border-radius: 50%;
+          border: 1px solid blue;
+          background-color: white;
+          position: absolute;
+          z-index: 1000;
+          right: 0;
+      ">
+            <img id="chatIcon" src="./img/chaticon.png" alt="" style="
+          width: 100%;
+          height: 100%;
+          object-fit: scale-down;
+      ">
+          </div>
+          <div id="fullscreen" style="
+          width: 50px;
+          height: 50px;
+          margin-top: 10%;
+          margin-left: 3px;
+          border-radius: 50%;
+          border: 1px solid blue;
+          background-color: white;
+          position: absolute;
+          z-index: 1000;
+          right: 0;
+      ">
+            <img id="btnToggleFull" src="./img/fullscreen.png" alt="" style="
+          width: 100%;
+          height: 100%;
+          object-fit: scale-down;
+      ">
+          </div>
         </footer>
         <% } %>
+
+          <div id="overlay_chat" style="display:none;">
+            <div id="chat_form" style="position: fixed;
+            /* top: 0; */
+            left: 0;
+            right: 0;
+            bottom: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(255 255 255 / 60%);
+            /* opacity: 0.2; */
+            width: 100%;
+            flex-direction: column;
+            height: 60%;">
+              <h2>Chat Room</h2>
+              <div>
+                <input type="text" placeholder="Nhập tin nhắn vào đây..." style="border-radius:10px;
+                padding:5px;" id="loinhan">
+                <button class="button-29" role="button" id="sendMessage">Gửi</button>
+              </div>
+
+              <emoji-picker style="
+                width: 400px;
+                height: 300px;
+              "></emoji-picker>
+              <br>
+
+            </div>
+          </div>
     </div>
+
   </div>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
   <script>
     AOS.init();
   </script>
@@ -367,6 +436,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js" integrity="sha512-uE2UhqPZkcKyOjeXjPCmYsW9Sudy5Vbv0XwAVnKBamQeasAVAmH6HR9j5Qpy6Itk1cxk+ypFRPeAZwNnEwNuzQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 
 
   <!-- Hỗ trợ âm thanh cho game -->
@@ -390,7 +460,25 @@
     //   }
     // })
 
+    let btnFull = document.querySelector('#btnToggleFull')
+
+    btnFull.addEventListener('click', () => {
+      if (screenfull.isEnabled) {
+        screenfull.toggle();
+      }
+    })
+
+
+
+
     var socket = io();
+
+
+    var nhacnen = new Howl({
+      src: ['/audio/nhacnengame.mp3']
+    });
+
+
     var soundhd0 = new Howl({
       src: ['/audio/hd1.mp3']
     });
@@ -463,6 +551,54 @@
     var tiengdatxu = new Howl({
       src: ['/audio/bonk.mp3']
     });
+
+    var chienthang = new Howl({
+      src: ['/audio/chienthang.mp3']
+    });
+
+
+    //Xu li chat room
+    let chatbtn = document.querySelector('#chatIcon')
+    chatbtn.addEventListener('click', () => {
+      let chatoverLay = document.querySelector('#overlay_chat')
+      if (chatoverLay.style.display == 'block') {
+        chatoverLay.style.display = 'none'
+      } else {
+        chatoverLay.style.display = 'block'
+      }
+    })
+
+
+
+
+    document.querySelector('emoji-picker')
+      .addEventListener('emoji-click', event => {
+        let mess = document.querySelector('#loinhan')
+        mess.value = mess.value + event.detail.unicode
+      });
+
+    let btnsendMess = document.querySelector('#sendMessage')
+    btnsendMess.addEventListener('click', () => {
+      let mess = document.querySelector('#loinhan')
+
+
+      let datasendMessage = {
+        message: mess.value,
+        nickname: document.querySelector('#nickname_user').innerText
+      }
+
+      socket.emit('datasendFromClient', datasendMessage)
+
+      mess.value = ''
+    })
+
+
+
+
+
+    socket.on('datasendFromAdmin', (data) => {
+      $.notify(`${data.nickname}: ${data.message}`, "success", { clickToHide: true }).addStyle('font-weight', 'bold')('opacity', '0.7');
+    })
     //Quản lí chơi bầu cua
     // Tổng cộng Admin sẽ có 3 hành động
     // 1.Admin nhấn bắt đầu -> Sẽ lắc xúc xắc -> Cho thời gian đặt cược (20 giây) -> Hết thời gian đặt cược -> Tự khui xúc xắc -> Phát thưởng
@@ -812,6 +948,7 @@
           item.style.opacity = '0.5'
         })
         statusGame.innerText = array_status_game[6]
+        chienthang.play();
         document.querySelector('#xuthem').innerHTML = '';
         let demtong = document.querySelectorAll('.count_coin_order')
 
@@ -1130,7 +1267,12 @@
       const anhdaidien = document.querySelector('#anhdaidien')
       const socketID = socket.id;
 
+
       soundhd0.play();
+
+      setTimeout(() => {
+        nhacnen.play()
+      }, 1500)
       let roomUser = {
         nickname: nickname.innerText,
         tongxu: tongxu.innerText,
