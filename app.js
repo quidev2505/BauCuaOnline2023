@@ -33,7 +33,7 @@ const PORT = process.env.PORT || 3030;
 
 //Kết nối mongodb
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://admin123:admin123ok@baucua.oqtswzp.mongodb.net/?retryWrites=true&w=majority').then(()=>console.log('Ket nối DB thành công')).catch(()=>console.log('Kết nối DB thất bại'))
+mongoose.connect('mongodb+srv://admin123:admin123ok@baucua.oqtswzp.mongodb.net/test?retryWrites=true&w=majority').then(()=>console.log('Ket nối DB thành công')).catch(()=>console.log('Kết nối DB thất bại'))
 
 
 // Use the session middleware
