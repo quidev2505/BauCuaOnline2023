@@ -11,7 +11,8 @@ const io = new Server(server);
 //Xử lí form với body-parser
 var bodyParser = require('body-parser')
 var session = require('express-session')
-const port = 3000
+const PORT = process.env.PORT || 3030;
+
 
 //Xử lí âm thanh game với thư viện howler.js
 // const {Howl, Howler} = require('howler');
@@ -678,7 +679,7 @@ app.get('/404_page',(req, res)=>{
 app.get('*',(req, res)=>{
     res.redirect('/404_page')
 })
-server.listen(3000, ()=>{
-    console.log(`Ket noi thanh cong server voi cong port = ${port}`)
+server.listen(PORT, ()=>{
+    console.log(`Ket noi thanh cong server voi cong port = ${PORT}`)
 })
 
