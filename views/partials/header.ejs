@@ -30,8 +30,10 @@
     <!-- 
     Thư viện AOS hiệu ứng -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <meta name="viewport" content="viewport-fit=cover, user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
 
-    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <!-- Style rieng cho button -->
     <style>
         /* CSS */
@@ -130,9 +132,6 @@
             transform: translateY(2px);
         }
 
-        body {
-            overflow: hidden;
-        }
 
 
 
@@ -428,7 +427,13 @@
                 padding: 16px 32px;
             }
         }
+
+        body {
+            overflow: hidden;
+        }
     </style>
 </head>
 
 <body>
+    <!--Sử dụng preloader-->
+    <div class="preloader"></div>
