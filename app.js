@@ -447,6 +447,7 @@ io.on('connection', (socket) => {
             tom:0
         },{new:true}).then(()=>{})
 
+        openRoom = 'true'
     })
 
     //Nhận giá trị từ client
