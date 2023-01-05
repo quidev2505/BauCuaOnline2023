@@ -278,7 +278,7 @@ io.on('connection', (socket) => {
         let bobaso = {
             so1: danhtinhmoi(danhtinh[0]),
             so2: danhtinhmoi(danhtinh[1]),
-            so3:danhtinhmoi(danhtinh[2])
+            so3: danhtinhmoi(danhtinh[2])
         }
 
         let ketquanew = `${bobaso.so1}-${bobaso.so2}-${bobaso.so3}`;
@@ -406,7 +406,9 @@ io.on('connection', (socket) => {
     }
 
 
-
+    socket.on('endgame',()=>{
+        io.emit('endgamepro')
+    })
 
     //Khi Admin nhấn vào bắt đầu lại màn chơi
     socket.on('action2',()=>{
@@ -433,6 +435,17 @@ io.on('connection', (socket) => {
         const roomuser = require('./model/roomUser');
         roomuser.findOneAndRemove({}).then()
         roomuser.deleteMany()
+
+
+        const showCoinModel = require('./model/showcoin');
+        showCoinModel.findOneAndUpdate({id:'saveimg'},
+            {nai: 0,
+            bau:0,
+            ga:0,
+            ca:0,
+            cua:0,
+            tom:0
+        },{new:true}).then(()=>{})
 
     })
 

@@ -99,9 +99,19 @@
 
               </div>
             </div>
-            <div class="container">
+            <div class="container" style="position:relative">
+              <div class="overlay" style="    position: absolute;
+              display: block;
+              z-index: 2;
+              background-color: rgb(255 0 0 / 0%);
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;" id="lopphu">
+
+              </div>
               <div class="row row-cols-3" style="border:2px solid orange;border-radius: 5px;    background-color: #7d0301;
-       ">
+              ">
                 <div class="col">
                   <div class="count_coin_order" data-index="nai">
 
@@ -258,7 +268,7 @@
         </div>
 
 
-        <footer class="row container-fluid" style="    width: 300px;display: flex;flex-wrap:nowrap;
+        <footer class="row container-fluid" style="    width: 300px;display: flex;flex-wrap:nowrap;z-index:2;
     margin: 0 auto;">
           <div class="card" style="border-radius: 10px;
         border: 1px solid #ccc;background-color: #252a4f ;padding: 3px 0px 0px 0px;">
@@ -640,6 +650,8 @@
       //5 giai đoạn
       //1.Lắc xúc xắc
       statusGame.innerText = array_status_game[1]
+      document.querySelector('#lopphu').style.display = 'block'
+      document.querySelector('#lopphu').style.zIndex = '2'
       hd1();
 
       //2. Đặt cược đi !
@@ -828,23 +840,14 @@
 
 
 
-    // Hàm dùng chặn đặt xu
-    function prevent_xu() {
-      let odat = document.querySelectorAll('.cell_chess')
-      odat.forEach((item, index) => {
-        item.addEventListener('click', () => {
-
-        })
-      })
-    }
-
 
     //Mô tả hàm hành động
     //Hành động 1.Lắc xúc sắc
     function hd1() {
-      prevent_xu();
       soundhd1.play()
       setTimeout(() => {
+        document.querySelector('#lopphu').style.display = 'block'
+        document.querySelector('#lopphu').style.zIndex = '2'
         let btn_coinChoose = document.querySelectorAll('.coinChoose');
         btn_coinChoose.forEach((item, index) => {
           item.style.pointerEvents = 'none'
@@ -858,8 +861,9 @@
     //Hành động 2.Hành động đặt cược đi
     function hd2() {
       soundhd1_2.pause()
-      prevent_xu();
       setTimeout(() => {
+        document.querySelector('#lopphu').style.display = 'none'
+        document.querySelector('#lopphu').style.zIndex = '-1'
         datcuocdi.play()
         let btn_coinChoose = document.querySelectorAll('.coinChoose');
         btn_coinChoose.forEach((item, index) => {
@@ -905,8 +909,9 @@
 
     //3.Hành động khui nha
     function hd3() {
-      prevent_xu()
       setTimeout(() => {
+        document.querySelector('#lopphu').style.display = 'block'
+        document.querySelector('#lopphu').style.zIndex = '2'
         khui.play()
         let btn_coinChoose = document.querySelectorAll('.coinChoose');
         btn_coinChoose.forEach((item, index) => {
@@ -941,8 +946,9 @@
 
     //4.Hành động nhận thưởng
     function hd4() {
-      prevent_xu()
       setTimeout(() => {
+        document.querySelector('#lopphu').style.display = 'block'
+        document.querySelector('#lopphu').style.zIndex = '2'
         xuroi.play()
         let btn_coinChoose = document.querySelectorAll('.coinChoose');
         btn_coinChoose.forEach((item, index) => {
@@ -982,8 +988,9 @@
 
     //5.Hành động qua ván mới
     function hd5() {
-      prevent_xu()
       setTimeout(() => {
+        document.querySelector('#lopphu').style.display = 'block'
+        document.querySelector('#lopphu').style.zIndex = '2'
         let btn_coinChoose = document.querySelectorAll('.coinChoose');
         btn_coinChoose.forEach((item, index) => {
           item.style.pointerEvents = 'none'
@@ -995,6 +1002,8 @@
         let demtong = document.querySelectorAll('.count_coin_order')
 
         xutempOrder = 0;
+        xuOrder = 0;
+        demtong.length = 0;
         demtong.forEach((item, index) => {
           item.innerHTML = ''
         })
@@ -1003,6 +1012,8 @@
         showxu.forEach((item, index) => {
           item.remove()
         })
+
+        socket.emit('endgame')
       }, 30000)
     }
 
@@ -1156,9 +1167,6 @@
             } else if (tongXu < parseInt(number_coin_order)) {
               $("#statusGame").notify(`Số xu hiện tại không đủ`, "warn", { clickToHide: true }).addStyle('font-weight', 'bold')('opacity', '0.6');
               return false;
-            } else if (xuOrder > 25) {
-              $("#statusGame").notify(`Chỉ được đặt tối đa 25 xu`, "warn", { clickToHide: true }).addStyle('font-weight', 'bold')('opacity', '0.6');
-              return false;
             }
             else {
               tongxu.innerText = parseInt(tongxu.innerText) - parseInt(number_coin_order);
@@ -1173,6 +1181,7 @@
                 if (item.dataset.index == dataIndex) {
                   let countXu = document.querySelectorAll(`.${dataIndex}`)
                   item.innerText = countXu.length
+                  console.log('da dat ' + countXu.length)
                   let xudat = {
                     name: dataIndex,
                     count_xu: number_coin_order

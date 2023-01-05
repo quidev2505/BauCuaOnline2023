@@ -178,7 +178,7 @@
                                 </div>
                                 <br>
                                 <div id="restart">
-                                    <button type="button" class="btn btn-danger" id="restart">2.Bắt đầu lại</button>
+                                    <button type="button" class="btn btn-success" id="restart">2.Bắt đầu lại</button>
                                 </div>
                             </div>
 
@@ -236,20 +236,28 @@
             let startGame = document.querySelector('#startGame');
             let btnrestart = document.querySelector('#restart');
 
-            document.querySelector('#restart > button').setAttribute("disabled", "");
+
+            btnrestart.style.display = 'none'
 
             //Nhấn nút bắt đầu
             startGame.addEventListener('click', () => {
                 socket.emit('action1');
-                document.querySelector('#startGame > button').setAttribute("disabled", "");
-                document.querySelector('#restart > button').removeAttribute('disabled');
+                startGame.style.display = 'none'
+                document.querySelector('#action_game').innerText = 'Trò chơi đang diễn ra...'
+            })
+
+
+            socket.on('endgamepro', () => {
+                document.querySelector('#action_game').innerText = ''
+                btnrestart.style.display = 'block'
+                startGame.style.display = 'none'
             })
 
             //Nhấn nút bắt đầu lại màn chơi
             btnrestart.addEventListener('click', () => {
                 socket.emit('action2');
-                document.querySelector('#startGame > button').removeAttribute('disabled');
-                document.querySelector('#restart > button').setAttribute("disabled", "");
+                btnrestart.style.display = 'none'
+                startGame.style.display = 'block'
             })
 
 
@@ -341,11 +349,12 @@
                     item.addEventListener('click', (e) => {
                         e.target.parentElement.parentElement.remove();
                         socket.emit('accept_ruttien', data_user)
-                        alert('Rút tiền thành công!')
+                        $.notify(`Rút tiền thành công !`, "success", { clickToHide: true }).addStyle('font-weight', 'bold')('opacity', '0.6');
+
                         setTimeout(() => {
                             location.reload();
                             sound.pause()
-                        }, 500)
+                        }, 1000)
                     })
                 })
 
@@ -353,7 +362,7 @@
                     item.addEventListener('click', (e) => {
                         e.target.parentElement.parentElement.remove();
                         socket.emit('deny_ruttien', data_user)
-                        alert('Đã từ chối rút tiền!')
+                        $.notify(`Đã từ chối rút tiền`, "success", { clickToHide: true }).addStyle('font-weight', 'bold')('opacity', '0.6');
                         notification_icon.style.display = 'none'
                         sound.pause()
                     })
