@@ -383,6 +383,8 @@
           width: 100%;
           height: 100%;
           object-fit: scale-down;
+          position:relative;
+          z-index: 999;
       ">
           </div>
           <div id="fullscreen" style="
@@ -394,7 +396,7 @@
           border: 1px solid blue;
           background-color: white;
           position: absolute;
-          z-index: 1000;
+          z-index: 999;
           right: 0;
       ">
             <img id="btnToggleFull" src="./img/fullscreen.png" alt="" style="
@@ -406,16 +408,16 @@
         </footer>
         <% } %>
 
-          <div id="overlay_chat" style="display:none;">
+          <div id="overlay_chat" style="display:none;position:absolute;z-index:998;">
             <div id="chat_form" style="position: fixed;
             /* top: 0; */
-            left: 0;
+            left: 19px;
             right: 0;
             bottom: -117px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: rgb(255 255 255 / 60%);
+            background-color: rgb(255 255 255 / 80%);
             /* opacity: 0.2; */
             width: 100%;
             flex-direction: column;
@@ -661,7 +663,6 @@
       hd3()
 
       socket.on('bobasomaiman', (bobaso) => {
-        prevent_xu()
         setTimeout(() => {
           chucmung.play()
         }, 2000)

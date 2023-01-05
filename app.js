@@ -316,7 +316,7 @@ io.on('connection', (socket) => {
                 so2: so2,
                 so3:so3
             }
-            socket.broadcast.emit('bobasomaiman', bobaso);
+            io.emit('bobasomaiman', bobaso);
 
 
 
