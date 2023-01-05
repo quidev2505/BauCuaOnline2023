@@ -271,23 +271,7 @@ io.on('connection', (socket) => {
     //Khi admin nhấn bắt đầu game
     socket.on('action1',()=>{
         io.emit('action1FromAdmin')
-    })
-
-    //Khi nhận được thông báo khui từ phía client sẽ tạo ra ngẫu nhiên các cặp số
-    socket.on('khuixucxac',(data)=>{
-        
-        let arrayUser = []
-        let datcuocUser = []
-        let mangbaucua = data.mangbaucua
-        let nicknameUser = data.nicknameUser
-
-        mangbaucua.forEach((item, index)=>{
-            if(parseInt(item.soluong) > 0){
-                arrayUser.push(item.ten)
-                datcuocUser.push(`${item.ten} - ${item.soluong}`)
-            }
-        })
-
+        const ketqua = require('./model/ketqua');
         const randomNumberNew = Math.ceil(Math.random()*216)
         let danhtinh = arrayNumber[randomNumberNew];
     
@@ -297,49 +281,92 @@ io.on('connection', (socket) => {
             so3:danhtinhmoi(danhtinh[2])
         }
 
-        let arrayKQ = [bobaso.so1, bobaso.so2, bobaso.so3];
+        let ketquanew = `${bobaso.so1}-${bobaso.so2}-${bobaso.so3}`;
 
-        console.log('ket qua:', arrayKQ);
-        console.log('User:', arrayUser);
+        ketqua.findOneAndUpdate({idphong: 'newyear'}, {ketqua: ketquanew},{new: true})
+        .then(()=>{
         
+        })
+    })
 
-        let arrayKQFinal = []
-        for(let i=0; i< arrayKQ.length; i++){
-            let count = 0;
-            for(let j=0;j<arrayUser.length; j++){
-                if(arrayKQ[i] == arrayUser[j]){
-                    count++;
+    //Khi nhận được thông báo khui từ phía client sẽ tạo ra ngẫu nhiên các cặp số
+    socket.on('khuixucxac',(data)=>{
+        const ketqua = require('./model/ketqua');
+        let arrayUser = []
+        let datcuocUser = []
+        let mangbaucua = data.mangbaucua
+        let nicknameUser = data.nicknameUser
+   
+        mangbaucua.forEach((item, index)=>{
+            if(parseInt(item.soluong) > 0){
+                arrayUser.push(item.ten)
+                datcuocUser.push(`${item.ten} - ${item.soluong}`)
+            }
+        })
+
+        ketqua.findOne().then((data)=>{
+            let chuoikq = data.ketqua;
+            let so1 = chuoikq.split("-")[0];
+            let so2 = chuoikq.split("-")[1];
+            let so3 = chuoikq.split("-")[2];
+            let arrayKQ = [so1, so2, so3];
+            
+            let bobaso = {
+                so1: so1,
+                so2: so2,
+                so3:so3
+            }
+            socket.broadcast.emit('bobasomaiman', bobaso);
+
+
+
+            console.log('ket qua va nickname', arrayKQ + ''+nicknameUser);
+            console.log('User va nickname', arrayUser+'-'+nicknameUser);
+            
+    
+            let arrayKQFinal = []
+            for(let i=0; i< arrayKQ.length; i++){
+                let count = 0;
+                for(let j=0;j<arrayUser.length; j++){
+                    if(arrayKQ[i] == arrayUser[j]){
+                        count++;
+                    }
+                }
+                if(count > 0){
+                    arrayKQFinal.push(`${arrayKQ[i]} - ${count}`)
                 }
             }
-            if(count > 0){
-                arrayKQFinal.push(`${arrayKQ[i]} - ${count}`)
-            }
-        }
-
-
-        console.log(arrayKQFinal)
-        console.log(datcuocUser)
-
-        let tongtienthuduoc = 0;
-        for(let i=0;i<arrayKQFinal.length;i++){
-            let tenkq = arrayKQFinal[i].split("-")[0];
-            let soluongkq = arrayKQFinal[i].split("-")[1];
-            for(let j= 0;j<datcuocUser.length;j++){
-                let tendatcuoc= datcuocUser[j].split("-")[0]
-                let xudatcuoc= datcuocUser[j].split("-")[1]
-
-                if(tenkq == tendatcuoc){
-                    tongtienthuduoc+=(parseInt(soluongkq * xudatcuoc)+parseInt(xudatcuoc))
+    
+    
+            console.log('nickname'+arrayKQFinal+'-'+nicknameUser)
+            console.log('nickname'+datcuocUser+'-'+nicknameUser)
+    
+            var tongtienthuduoc = 0;
+            for(let i=0;i<arrayKQFinal.length;i++){
+                let tenkq = arrayKQFinal[i].split("-")[0];
+                let soluongkq = arrayKQFinal[i].split("-")[1];
+                for(let j= 0;j<datcuocUser.length;j++){
+                    let tendatcuoc= datcuocUser[j].split("-")[0]
+                    let xudatcuoc= datcuocUser[j].split("-")[1]
+    
+                    if(tenkq == tendatcuoc){
+                        tongtienthuduoc+=(parseInt(soluongkq * xudatcuoc)+parseInt(xudatcuoc))
+                    }
                 }
             }
-        }
+            
 
+            setTimeout(()=>{{
+                let dataQT = {
+                    nickname: nicknameUser,
+                    tongtien: tongtienthuduoc
+                }
+                io.emit('tienxuthuduoc', dataQT)
+            }},6200)
+        })
 
-        setTimeout(()=>{{
-            io.emit('tienxuthuduoc', tongtienthuduoc)
-        }},6000)
         
-        io.emit('bobasomaiman', bobaso);
+    
     })
 
     socket.on('capnhattienmoi',(guidi)=>{

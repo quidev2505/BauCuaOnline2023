@@ -178,7 +178,7 @@
                                 </div>
                                 <br>
                                 <div id="restart">
-                                    <button type="button" class="btn btn-success" id="restart">2. Bắt đầu lại màn chơi</button>
+                                    <button type="button" class="btn btn-danger" id="restart">2.Bắt đầu lại</button>
                                 </div>
                             </div>
 
@@ -234,7 +234,7 @@
             // 2.Admin nhấn vào bắt đầu lại trò chơi
 
             let startGame = document.querySelector('#startGame');
-            let restart = document.querySelector('#restart');
+            let btnrestart = document.querySelector('#restart');
 
             document.querySelector('#restart > button').setAttribute("disabled", "");
 
@@ -245,13 +245,12 @@
                 document.querySelector('#restart > button').removeAttribute('disabled');
             })
 
-            //Nhấn nút bắt đầu lại trò chơi
-            restart.addEventListener('click', () => {
+            //Nhấn nút bắt đầu lại màn chơi
+            btnrestart.addEventListener('click', () => {
                 socket.emit('action2');
                 document.querySelector('#startGame > button').removeAttribute('disabled');
                 document.querySelector('#restart > button').setAttribute("disabled", "");
             })
-
 
 
             socket.on('createElementUser', (data) => {
