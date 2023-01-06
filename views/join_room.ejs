@@ -983,7 +983,7 @@
         tongxu.innerText = parseInt(tongxu.innerText) + parseInt(tongtienxu.tongtien)
         let guidi = {
           nickname: document.querySelector('#nickname_user').innerText,
-          tongxu: parseInt(tongxu.innerText) + parseInt(tongtienxu.tongtien)
+          tongxu: tongxu.innerText
         }
         socket.emit('capnhattienmoi', guidi);
       }

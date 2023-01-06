@@ -343,12 +343,12 @@
                     item.addEventListener('click', (e) => {
                         e.target.parentElement.parentElement.remove();
                         socket.emit('accept_ruttien', data_user)
-                        $.notify(`Rút tiền thành công !`, "success", { clickToHide: true }).addStyle('font-weight', 'bold')('opacity', '0.6');
+                        alert('Rút tiền thành công!')
 
                         setTimeout(() => {
                             location.reload();
                             sound.pause()
-                        }, 1000)
+                        }, 500)
                     })
                 })
 
@@ -356,7 +356,7 @@
                     item.addEventListener('click', (e) => {
                         e.target.parentElement.parentElement.remove();
                         socket.emit('deny_ruttien', data_user)
-                        $.notify(`Đã từ chối rút tiền`, "success", { clickToHide: true }).addStyle('font-weight', 'bold')('opacity', '0.6');
+                        alert('Đã từ chối rút tiền!')
                         notification_icon.style.display = 'none'
                         sound.pause()
                     })
