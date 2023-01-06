@@ -406,9 +406,6 @@ io.on('connection', (socket) => {
     }
 
 
-    socket.on('endgame',()=>{
-        io.emit('endgamepro')
-    })
 
     //Khi Admin nhấn vào bắt đầu lại màn chơi
     socket.on('action2',()=>{

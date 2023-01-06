@@ -233,31 +233,25 @@
             // 1.Admin nhấn bắt đầu -> Sẽ lắc xúc xắc -> Cho thời gian đặt cược (20 giây) -> Hết thời gian đặt cược -> Tự khui xúc xắc -> Phát thưởng
             // 2.Admin nhấn vào bắt đầu lại trò chơi
 
-            let startGame = document.querySelector('#startGame');
-            let btnrestart = document.querySelector('#restart');
+            document.querySelector('#startGame').style.display = 'block';
 
 
-            btnrestart.style.display = 'none'
+            document.querySelector('#restart').style.display = 'none'
 
             //Nhấn nút bắt đầu
-            startGame.addEventListener('click', () => {
+            document.querySelector('#startGame').addEventListener('click', () => {
                 socket.emit('action1');
-                startGame.style.display = 'none'
-                document.querySelector('#action_game').innerText = 'Trò chơi đang diễn ra...'
+                document.querySelector('#startGame').style.display = 'none'
+                document.querySelector('#restart').style.display = 'block'
             })
 
 
-            socket.on('endgamepro', () => {
-                document.querySelector('#action_game').innerText = ''
-                btnrestart.style.display = 'block'
-                startGame.style.display = 'none'
-            })
 
             //Nhấn nút bắt đầu lại màn chơi
-            btnrestart.addEventListener('click', () => {
+            document.querySelector('#restart').addEventListener('click', () => {
                 socket.emit('action2');
-                btnrestart.style.display = 'none'
-                startGame.style.display = 'block'
+                document.querySelector('#restart').style.display = 'none'
+                document.querySelector('#startGame').style.display = 'block'
             })
 
 
