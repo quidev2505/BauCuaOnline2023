@@ -553,7 +553,7 @@ io.on('connection', (socket) => {
         createElementUser();
         countNumberUser();
        
-    },1100)
+    },900)
 
     // setInterval(()=>{
     //     showXuDatRoomSocket();
