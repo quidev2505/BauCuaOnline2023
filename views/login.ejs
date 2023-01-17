@@ -30,11 +30,11 @@
                         <form action="/login" method="post" class="container">
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label fw-bold">Tên đăng nhập</label>
-                                <input type="text" class="form-control" id="username" aria-describedby="emailHelp" name="username" required>
+                                <input type="text" class="form-control" id="username" aria-describedby="emailHelp" name="username" minlength="3" required>
                             </div>
                             <div class="mb-3">
                                 <label for="exampleInputPassword1" class="form-label fw-bold">Mật khẩu</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
+                                <input type="password" class="form-control" id="exampleInputPassword1" name="password" minlength="6" required>
                             </div>
                             <br>
                             <button class="button-66" role="button" style="margin:0 auto;">XÁC NHẬN</button>
