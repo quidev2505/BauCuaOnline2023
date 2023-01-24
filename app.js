@@ -49,28 +49,18 @@ app.use(express.static(__dirname + '/public'))
 
 app.set('view engine','ejs')
 
-var compression = require('compression')
-// compress responses
-app.use(compression())
- 
-// server-sent event stream
-app.get('/events', function (req, res) {
-  res.setHeader('Content-Type', 'text/event-stream')
-  res.setHeader('Cache-Control', 'no-cache')
- 
-  // send a ping approx every 2 seconds
-  var timer = setInterval(function () {
-    res.write('data: ping\n\n')
- 
-    // !!! this is the important part
-    res.flush()
-  }, 2000)
- 
-  res.on('close', function () {
-    clearInterval(timer)
-  })
-})
+const compression = require('compression');
 
+// compress all responses
+app.use(compression());
+
+app.get('/', (req, res) => {
+  const animal = 'alligator';
+  // Send a text/html file back with the word 'alligator' repeated 1000 times
+  res.send(animal.repeat(1000));
+});
+
+// ...
 
 //Body_parser cho form có dạng POST
 // create application/json parser
