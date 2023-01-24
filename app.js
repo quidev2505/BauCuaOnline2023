@@ -54,11 +54,7 @@ const compression = require('compression');
 // compress all responses
 app.use(compression());
 
-app.get('/', (req, res) => {
-  const animal = 'alligator';
-  // Send a text/html file back with the word 'alligator' repeated 1000 times
-  res.send(animal.repeat(1000));
-});
+
 
 // ...
 
